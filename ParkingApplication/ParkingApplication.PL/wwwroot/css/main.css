@@ -1,33 +1,8 @@
-:root {
-  --font-color: #504f4d;
-  --main-font: 'Lexend Exa', sans-serif;
-  --main-color: #5481a9;
-  --parking-slot-color: #d9d9d9;
-  
-  --card-color-1: #F9F9F9;
-  --card-color-2: #6092C0;
-  
-  --card-color-hover-1: #e0e0e0;
-  --card-color-hover-2: #76a8da;
-
-
-  --card-color-selected-2: #7cb4ef;
-}
-
-* {
-  font-family: var(--main-font) !important;
-}
-
-body {
+main {
   color: var(--font-color);
   display: grid;
   grid-template-columns: 30% auto;
   background-color: var(--main-color);
-}
-
-.card-style {
-  border-radius: 10px;
-  border: none;
 }
 
 .parking-display, .menu-display {
@@ -55,13 +30,11 @@ body {
   position: absolute;
   background-color: var(--card-color-2);
   color: #FFF;
-  width: 360px;
-  height: 200px;
-  line-height: 200px;
-  text-align: center;
+  width: 80%;
+  height: 35%;
   transform: rotateX(-60deg) rotateZ(-20deg) rotateY(-10deg);
   border: 3px solid #5481a8;
-  /* 4d769b */
+  cursor: pointer;
   border-radius: 10px;
   transition: 100ms;
 }
@@ -176,6 +149,8 @@ body {
   font-size: 1.1em;
   cursor: pointer;
   overflow: hidden;
+  transition: 800ms;
+  color: var(--font-color);
 }
 
 .menu-btn span {
@@ -196,10 +171,14 @@ body {
   z-index: 0;
 }
 
+.menu-btn:hover {
+  color: var(--card-color-1)
+}
+
 .menu-btn:hover::after {
   height: 700%;
   width: 400%;
   border-radius: 50%;
-  background-color: var(--card-color-hover-1);
-  box-shadow: 4px 4px 25px 0 var(--card-color-hover-1);
+  background-color: var(--card-color-hover-2);
+  box-shadow: 4px 4px 25px 0 var(--card-color-hover-2);
 }

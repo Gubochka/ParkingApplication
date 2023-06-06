@@ -4,19 +4,27 @@ using ParkingApplication.Models;
 
 namespace ParkingApplication.Controllers;
 
-public class MainController : Controller
+public class HomeController : Controller
 {
-    private readonly ILogger<MainController> _logger;
+    private readonly ILogger<HomeController> _logger;
 
-    public MainController(ILogger<MainController> logger)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
     }
 
+    [Route("")]
     public IActionResult Index()
     {
         return View("Main");
     }
+
+    [Route("authorization")]
+    public IActionResult Authorization()
+    {
+        return View("Authorization");
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

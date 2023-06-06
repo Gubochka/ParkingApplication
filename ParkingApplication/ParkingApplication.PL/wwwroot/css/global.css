@@ -1,0 +1,125 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-color: #504f4d;
+    --main-font: 'Lexend Exa', sans-serif;
+    --main-color: #5481a9;
+    --parking-slot-color: #d9d9d9;
+
+    --card-color-1: #F9F9F9;
+    --card-color-2: #6092C0;
+
+    --card-color-hover-1: #e0e0e0;
+    --card-color-hover-2: #76a8da;
+
+
+    --card-color-selected-2: #7cb4ef;
+}
+
+* {
+    font-family: var(--main-font) !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 4px 20px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-color-1);
+    color: var(--font-color)
+}
+
+header .header-content {
+    height: 100%;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+    align-items: center;
+}
+
+.header-content label {
+    font-size: 18px;
+    position: relative;
+    cursor: pointer;
+}
+
+.header-content label::after {
+    content: "";
+    width: 2px;
+    height: 100%;
+    background-color: var(--font-color);
+    position: absolute;
+    bottom: 0;
+    right: -12px;
+}
+
+.header-btn  {
+    color: var(--card-color-1);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card-color-2);
+    height: 100%;
+    width: 150px;
+    font-size: 1.1em;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 800ms;
+}
+
+.header-btn span {
+    z-index: 2;
+}
+
+.header-btn::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: 0;
+    height: 0;
+    width: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: 800ms;
+    opacity: 1;
+    z-index: 0;
+}
+
+.header-btn:hover {
+    color: var(--font-color);
+}
+
+.header-btn:hover::after {
+    height: 700%;
+    width: 400%;
+    border-radius: 50%;
+    background-color: var(--card-color-hover-1);
+    box-shadow: 4px 4px 25px 0 var(--card-color-hover-1);
+}
+
+main {
+    height: calc(100vh - 60px);
+}
+
+.svg-logo {
+    height: 52px;
+    width: 52px;
+    background-color: var(--font-color);
+    -webkit-mask-image: url("../images/ParkingLogo.svg");
+    -webkit-mask-size: auto 40px;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+}
+
+.card-style {
+    border-radius: 10px;
+    border: none;
+}

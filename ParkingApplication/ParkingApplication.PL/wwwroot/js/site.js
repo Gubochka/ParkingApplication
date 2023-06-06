@@ -35,8 +35,8 @@
     }
 }
 
-function getSlotsByParkingFloor() {
-    generateParkingSlots()
+function getSlotsByParkingFloor(floor) {
+    generateParkingSlots(floor)
 }
 
 function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin) {
@@ -55,7 +55,7 @@ function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin
         marginBottom -= 60
         element.style.marginBottom = `${marginBottom}px`
     })
-    getSlotsByParkingFloor()
+    getSlotsByParkingFloor(+selectedElement.dataset.index+1)
 }
 
 function generateParkingFloors(floorsCount=4) {

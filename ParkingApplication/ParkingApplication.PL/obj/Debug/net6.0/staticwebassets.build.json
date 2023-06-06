@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Rx0HFcRU0xS9JZvrBxu47lqhDe4yZBA1ppYIrlViqVc=",
+  "Hash": "UsDz/z5k/OhIePfx60LLBsvkIFYutcwU0ok/JIZxg0E=",
   "Source": "ParkingApplication.PL",
   "BasePath": "_content/ParkingApplication.PL",
   "Mode": "Default",
@@ -51,12 +51,12 @@
       "OriginalItemSpec": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ParkingApplication.PL.bundle.scp.css"
     },
     {
-      "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\css\\fonts.css",
+      "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\css\\global.css",
       "SourceId": "ParkingApplication.PL",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\",
       "BasePath": "_content/ParkingApplication.PL",
-      "RelativePath": "css/fonts.css",
+      "RelativePath": "css/global.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -65,7 +65,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\fonts.css"
+      "OriginalItemSpec": "wwwroot\\css\\global.css"
     },
     {
       "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\css\\main.css",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\js\\menu_navigation.js",
+      "SourceId": "ParkingApplication.PL",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\",
+      "BasePath": "_content/ParkingApplication.PL",
+      "RelativePath": "js/menu_navigation.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\menu_navigation.js"
     },
     {
       "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\js\\site.js",
