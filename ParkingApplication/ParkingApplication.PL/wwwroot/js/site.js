@@ -35,32 +35,47 @@
     }
 }
 
+function getSlotsByParkingFloor() {
+    generateParkingSlots()
+}
+
+function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin) {
+    for (let i = 0; i < floorsContainer.children.length; i++) {
+        const resetElement = floorsContainer.children[i]
+        resetElement.style.marginBottom = `${(i-(floorsCount/2 - (floorsCount%2)))*floorsMargin}px`
+        resetElement.classList.remove("selected")
+    }
+
+    const selectedIndex = +selectedElement.dataset.index
+    selectedElement.classList.add("selected")
+    const slicedElements = [...floorsContainer.children].slice(0, selectedIndex+1)
+
+    slicedElements.forEach(element => {
+        let marginBottom = parseInt(element.style.marginBottom)
+        marginBottom -= 60
+        element.style.marginBottom = `${marginBottom}px`
+    })
+    getSlotsByParkingFloor()
+}
+
 function generateParkingFloors(floorsCount=4) {
+    const floorsMargin = 70
+    
     const floorsContainer = document.querySelector(".parking-floors-container")
     floorsContainer.innerHTML = null
     for(let floor = 0; floor < floorsCount; floor++) {
         const floorElement = document.createElement("div")
         floorElement.classList.add("parking-floor")
-        floorElement.style.marginBottom = `${(floor-(floorsCount/2 - (floorsCount%2)))*60}px`
+        floorElement.style.marginBottom = `${(floor-(floorsCount/2 - (floorsCount%2)))*floorsMargin}px`
         floorElement.dataset.index = floor
         
-        floorElement.addEventListener("click", function() {
-            const selectedIndex = this.dataset.index //[...floorsContainer.children].indexOf(this.dataset.index)
-            console.log(selectedIndex)
-            
-            if (selectedIndex !== -1) {
-                const slicedElements = [...floorsContainer.children].slice(0, selectedIndex + 1);
-                console.log(slicedElements)
-                // for (let lowerFloor = selectedIndex; lowerFloor < floorsCount; lowerFloor++) {
-                //     const lowerFloorElement = floorsContainer.children[lowerFloor] // [...floorsContainer.children].reverse()[lowerFloor];
-                //    
-                //     let marginBottom = parseInt(lowerFloorElement.style.marginBottom)
-                //     marginBottom -= 60
-                //     lowerFloorElement.style.marginBottom = `${marginBottom}px`
-                // }
-            }
+        floorElement.addEventListener("click", function () {
+            selectFloor(this, floorsContainer, floorsCount, floorsMargin)
         });
         
         floorsContainer.insertAdjacentElement("beforeend", floorElement)
     }
+
+    floorsContainer.children[0].classList.add("selected")
+    selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin)
 }

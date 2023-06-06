@@ -2,18 +2,16 @@
   --font-color: #504f4d;
   --main-font: 'Lexend Exa', sans-serif;
   --main-color: #5481a9;
-  --card-color-1: #F9F9F9;
-  --card-color-hover-1: #e0e0e0;
-  
   --parking-slot-color: #d9d9d9;
   
-  /*
-  --font-color: #504f4d;
-  --main-font: 'Lexend Exa', sans-serif;
-  --main-color: #e7e7c3;
-  --card-color-1: #ffffe9;
-  --card-color-hover-1: #efefd9;
-   */
+  --card-color-1: #F9F9F9;
+  --card-color-2: #6092C0;
+  
+  --card-color-hover-1: #e0e0e0;
+  --card-color-hover-2: #76a8da;
+
+
+  --card-color-selected-2: #7cb4ef;
 }
 
 * {
@@ -55,20 +53,25 @@ body {
 
 .parking-floor {
   position: absolute;
-  background-color: #6092C0;
+  background-color: var(--card-color-2);
   color: #FFF;
-  width: 300px;
+  width: 360px;
   height: 200px;
   line-height: 200px;
   text-align: center;
   transform: rotateX(-60deg) rotateZ(-20deg) rotateY(-10deg);
-  border: 2px solid black;
-  border-radius: 8px;
+  border: 3px solid #5481a8;
+  /* 4d769b */
+  border-radius: 10px;
+  transition: 100ms;
 }
 
 .parking-floor:hover {
-  //translate: 0 -60%;
-  background-color: #0dcaf0;
+  background-color: var(--card-color-hover-2);
+}
+
+.parking-floor.selected {
+  background-color: var(--card-color-selected-2);
 }
 
 .parking-floor-rows {
