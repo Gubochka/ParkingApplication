@@ -1,0 +1,14 @@
+C:\git\ParckingApplication\ParckingApplication.DAL\bin\Debug\net6.0\ParckingApplication.DAL.deps.json
+C:\git\ParckingApplication\ParckingApplication.DAL\bin\Debug\net6.0\ParckingApplication.DAL.runtimeconfig.json
+C:\git\ParckingApplication\ParckingApplication.DAL\bin\Debug\net6.0\ParckingApplication.DAL.dll
+C:\git\ParckingApplication\ParckingApplication.DAL\bin\Debug\net6.0\ParckingApplication.DAL.pdb
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.csproj.AssemblyReference.cache
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.AssemblyInfoInputs.cache
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.AssemblyInfo.cs
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.csproj.CoreCompileInputs.cache
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.dll
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\refint\ParckingApplication.DAL.dll
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.pdb
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ParckingApplication.DAL.genruntimeconfig.cache
+C:\git\ParckingApplication\ParckingApplication.DAL\obj\Debug\net6.0\ref\ParckingApplication.DAL.dll

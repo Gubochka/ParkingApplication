@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Main page</title>
+    <link rel="stylesheet" type="text/css" href="~/css/reset.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/css/fonts.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css" asp-append-version="true">
+</head>
+<body>
+<div class="parking-display">
+    <div class="card-style parking-floors-container">
+        <div class="parking-floor"></div>
+        <div class="parking-floor"></div>
+        <div class="parking-floor"></div>
+        <div class="parking-floor"></div>
+    </div>
+    <div class="card-style parking-floor-rows"></div>
+</div>
+<div class="menu-display">
+    <div class="menu-opt-btns">
+        <div class="disable-selection card-style menu-btn">
+            <span>Info</span>
+        </div>
+        <div class="disable-selection card-style menu-btn">
+            <span>Reservation</span>
+        </div>
+        <div class="disable-selection card-style menu-btn">
+            <span>History</span>
+        </div>
+    </div>
+    <div class="card-style menu-opt-content"></div>
+</div>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+generateParkingSlots(1, 40)
+generateParkingFloors(4)
+</script>
+</body>
+</html>
