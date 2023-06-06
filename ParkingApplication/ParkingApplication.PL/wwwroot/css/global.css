@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Days+One&display=swap');
 
 :root {
     --font-color: #504f4d;
@@ -32,7 +33,9 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: var(--card-color-1);
-    color: var(--font-color)
+    color: var(--font-color);
+    box-shadow: 0 0 6px 0 var(--card-color-hover-1);
+    z-index: 1;
 }
 
 header .header-content {
@@ -45,7 +48,7 @@ header .header-content {
 }
 
 .header-content label {
-    font-size: 18px;
+    font-size: 1.1em;
     position: relative;
     cursor: pointer;
 }

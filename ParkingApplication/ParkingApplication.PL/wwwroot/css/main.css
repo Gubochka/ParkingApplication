@@ -180,5 +180,5 @@ main {
   width: 400%;
   border-radius: 50%;
   background-color: var(--card-color-hover-2);
-  box-shadow: 4px 4px 25px 0 var(--card-color-hover-2);
+  box-shadow: 4px 4px 35px 4px var(--card-color-hover-2);
 }

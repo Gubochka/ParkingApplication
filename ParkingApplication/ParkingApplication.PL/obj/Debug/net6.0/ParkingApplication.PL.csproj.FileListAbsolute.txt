@@ -84,9 +84,7 @@ C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\bin\Debug\net
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\bin\Debug\net6.0\ParkingApplication.DAL.pdb
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\staticwebassets.build.json
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\staticwebassets.development.json
-C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\scopedcss\bundle\ParkingApplication.PL.styles.css
-C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\scopedcss\projectbundle\ParkingApplication.PL.bundle.scp.css
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\ParkingApplication.PL.csproj.CopyComplete
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\ParkingApplication.PL.dll
 C:\git\ParkingApplication\ParkingApplication\ParkingApplication.PL\obj\Debug\net6.0\refint\ParkingApplication.PL.dll
