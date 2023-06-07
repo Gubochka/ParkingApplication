@@ -28,13 +28,6 @@ main {
     overflow: hidden;
     background-color: var(--card-color-1);
     z-index: 2;
-}
-
-.authorization-container .top-img[data-auth-type="left"] {
-    right: 50%;
-}
-
-.authorization-container .top-img[data-auth-type="right"] {
     right: 0%;
 }
 
@@ -51,13 +44,6 @@ main {
     position: absolute;
     transition: var(--auth-transition);
     filter: brightness(0.65);
-}
-
-.authorization-container .top-img[data-auth-type="left"]::before {
-    background-position: 0%;
-}
-
-.authorization-container .top-img[data-auth-type="right"]::before {
     background-position: 100%;
 }
 
@@ -84,48 +70,12 @@ main {
     align-items: center;
 }
 
-.info h1 {
-    margin-bottom: 10px;
-}
-
-.info-btn {
-    width: 80%;
-    border: 2px solid var(--card-color-1);
-    color: var(--card-color-1);
-    background-color: rgba(255, 255, 255, 0.4);
-    margin-top: 50px;
-    padding: 8px 4px;
-    cursor: pointer;
-    transition: 300ms;
-}
-
-.info-btn:hover, .info-btn:focus {
-    background-color: rgba(255, 255, 255, 0.55);
-    letter-spacing: 8px;
-}
-
-.top-img .info-content[data-auth-type="right"] {
-    translate: -50%;
-}
-
-.top-img .info-content[data-auth-type="right"] {
+.top-img .info-content {
     translate: 0%;
 }
 
-.top-img .info-content[data-auth-type="right"] .left .info {
-    translate: -200%;
-}
-
-.top-img .info-content[data-auth-type="left"] .left .info {
-    translate: 0%;
-}
-
-.top-img .info-content[data-auth-type="right"] .right .info {
+.top-img .info-content .right .info {
     translate: -100%;
-}
-
-.top-img .info-content[data-auth-type="left"] .right .info {
-    translate: 100%;
 }
 
 .authorization-container .left, .authorization-container .right  {
@@ -142,25 +92,13 @@ main {
     height: 100%;
 }
 
-.authorization-container .left[data-auth-type="left"] .content {
-    translate: -100%;
-}
-
-.authorization-container .left[data-auth-type="right"] .content {
-    translate: 0%;
-}
-
-.authorization-container .right[data-auth-type="left"] .content {
-    translate: 0%;
-}
-
-.authorization-container .right[data-auth-type="right"] .content {
-    translate: 100%;
-}
-
 .content h1, .info h1 {
     font-size: 2.2em;
     font-family: 'Days One', sans-serif !important;
+}
+
+.info h1 {
+    margin-bottom: 10px;
 }
 
 .content h1 {

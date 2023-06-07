@@ -8,6 +8,26 @@ public class AppMappingProfile : Profile
 {
     public AppMappingProfile()
     {
+        CreateMap<AdminModel, Admin>()
+            .ForMember(admin => admin.Email,
+                opt => opt.MapFrom(admin => admin.Email))
+            .ForMember(admin => admin.Password,
+                opt => opt.MapFrom(admin => admin.Password))
+            .ForMember(admin => admin.ParkingTemplateId,
+                opt => opt.MapFrom(admin => admin.ParkingTemplateId))
+            .ForMember(admin => admin.IsSuperAdmin,
+                opt => opt.MapFrom(admin => admin.IsSuperAdmin));
+        
+        CreateMap<Admin, AdminModel>()
+            .ForMember(admin => admin.Email,
+                opt => opt.MapFrom(admin => admin.Email))
+            .ForMember(admin => admin.Password,
+                opt => opt.MapFrom(admin => admin.Password))
+            .ForMember(admin => admin.ParkingTemplateId,
+                opt => opt.MapFrom(admin => admin.ParkingTemplateId))
+            .ForMember(admin => admin.IsSuperAdmin,
+                opt => opt.MapFrom(admin => admin.IsSuperAdmin));
+        
         CreateMap<OwnerModel, Owner>()
             .ForMember(owner => owner.FullName,
                 opt => opt.MapFrom(owner => owner.FullName))
@@ -36,6 +56,18 @@ public class AppMappingProfile : Profile
                 opt => opt.MapFrom(car => car.CarName))
             .ForMember(car => car.CarNumber,
                 opt => opt.MapFrom(car => car.CarNumber));
+        
+        CreateMap<ParkingTemplateModel, ParkingTemplate>()
+            .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
+            .ForMember(parkingTemplate => parkingTemplate.SlotsCount,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount));
+        
+        CreateMap<ParkingTemplate, ParkingTemplateModel>()
+            .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
+            .ForMember(parkingTemplate => parkingTemplate.SlotsCount,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount));
         
         CreateMap<ParkingModel, Parking>()
             .ForMember(parking => parking.CarId,

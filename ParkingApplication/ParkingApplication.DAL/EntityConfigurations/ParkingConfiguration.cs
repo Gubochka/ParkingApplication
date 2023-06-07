@@ -9,6 +9,7 @@ public class ParkingConfiguration : IEntityTypeConfiguration<Parking>
     public void Configure(EntityTypeBuilder<Parking> builder)
     {
         builder.HasIndex(x => x.Id);
+        builder.Property(x => x.ParkingTemplateId);
         builder.Property(x => x.FloorNumber).HasColumnType("int");
         builder.Property(x => x.SlotNumber).HasColumnType("int");
         builder.Property(x => x.StandsUntil).HasColumnType("datetime");

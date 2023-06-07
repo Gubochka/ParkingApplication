@@ -15,7 +15,9 @@ public static class Injecting
             options.UseSqlServer(configuration.GetConnectionString("Sql")));
         
         services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IAdminRepository, AdminRepository>();
         services.AddScoped<IOwnerRepository, OwnerRepository>();
+        services.AddScoped<IParkingTemplateRepository, ParkingTemplateRepository>();
         services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<IParkingRepository, ParkingRepository>();
     }

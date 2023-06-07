@@ -12,8 +12,8 @@ using ParkingApplication.DAL.Context;
 namespace ParkingApplication.DAL.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230601183445_intial_migration")]
-    partial class intial_migration
+    [Migration("20230607192718_initial_migrate")]
+    partial class initial_migrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,46 @@ namespace ParkingApplication.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<bool>("IsSuperAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ParkingTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("ParkingTemplateId");
+
+                    b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "superadmin.parking@gmail.com",
+                            IsSuperAdmin = true,
+                            Password = "123"
+                        });
+                });
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Car", b =>
                 {
@@ -87,6 +127,9 @@ namespace ParkingApplication.DAL.Migrations
                     b.Property<int>("FloorNumber")
                         .HasColumnType("int");
 
+                    b.Property<int>("ParkingTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -100,7 +143,39 @@ namespace ParkingApplication.DAL.Migrations
 
                     b.HasIndex("Id");
 
+                    b.HasIndex("ParkingTemplateId");
+
                     b.ToTable("Parking");
+                });
+
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.ParkingTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FloorsCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SlotsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("ParkingTemplates");
+                });
+
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.Admin", b =>
+                {
+                    b.HasOne("ParkingApplication.DAL.Entities.ParkingTemplate", "ParkingTemplate")
+                        .WithMany("Admins")
+                        .HasForeignKey("ParkingTemplateId");
+
+                    b.Navigation("ParkingTemplate");
                 });
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Car", b =>
@@ -121,6 +196,16 @@ namespace ParkingApplication.DAL.Migrations
                     b.Navigation("Parking");
                 });
 
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.Parking", b =>
+                {
+                    b.HasOne("ParkingApplication.DAL.Entities.ParkingTemplate", "ParkingTemplate")
+                        .WithMany("Parkings")
+                        .HasForeignKey("ParkingTemplateId")
+                        .IsRequired();
+
+                    b.Navigation("ParkingTemplate");
+                });
+
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Owner", b =>
                 {
                     b.Navigation("Cars");
@@ -129,6 +214,13 @@ namespace ParkingApplication.DAL.Migrations
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Parking", b =>
                 {
                     b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.ParkingTemplate", b =>
+                {
+                    b.Navigation("Admins");
+
+                    b.Navigation("Parkings");
                 });
 #pragma warning restore 612, 618
         }

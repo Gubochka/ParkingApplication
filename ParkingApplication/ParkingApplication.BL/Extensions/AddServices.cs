@@ -8,8 +8,10 @@ public static class AddServices
 {
     public static void AddServiceInjection(this IServiceCollection services)
     {
+        services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IOwnerService, OwnerService>();
         services.AddScoped<ICarService, CarService>();
+        services.AddScoped<IParkingTemplateService, ParkingTemplateService>();
         services.AddScoped<IParkingService, ParkingService>();
 
         services.AddAutoMapper(typeof(AppMappingProfile));

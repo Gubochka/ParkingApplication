@@ -1,5 +1,6 @@
 using ParkingApplication.BL.Extensions;
 using ParkingApplication.DAL.Extensions;
+using ParkingApplication.Extensions;
 using ParkingApplication.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ IConfiguration configuration = builder.Configuration;
 builder.Services.AddControllersWithViews();
 builder.Services.Inject(configuration);
 builder.Services.AddServiceInjection();
+builder.Services.AddMapper();
 
 var app = builder.Build();
 
