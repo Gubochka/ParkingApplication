@@ -23,9 +23,15 @@ public class AdminService : IAdminService
         return await _repository.AddAsync(entity);
     }
 
-    public async Task<AdminModel>? GetAdminById(int id)
+    public async Task<AdminModel?> GetAdminById(int id)
     {
         var entity = await _repository.GetByIdAsync(id);
+        return _mapper.Map<AdminModel>(entity);
+    }
+
+    public async Task<AdminModel?> GetAdminByEmail(string email)
+    {
+        var entity = await _repository.GetAdminByEmail(email);
         return _mapper.Map<AdminModel>(entity);
     }
 

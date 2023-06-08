@@ -13,6 +13,7 @@ public static class AddServices
         services.AddScoped<ICarService, CarService>();
         services.AddScoped<IParkingTemplateService, ParkingTemplateService>();
         services.AddScoped<IParkingService, ParkingService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddAutoMapper(typeof(AppMappingProfile));
     }

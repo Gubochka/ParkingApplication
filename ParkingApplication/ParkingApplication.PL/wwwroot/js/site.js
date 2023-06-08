@@ -1,4 +1,11 @@
-﻿function generateParkingSlots(floor, slotsCount=40) {
+﻿document.addEventListener("readystatechange", () => {
+    const token = getCookie("bearer")
+    if(token === "null") {
+        document.location.href = "/authorization"
+    }
+})
+
+function generateParkingSlots(floor, slotsCount=40) {
     const remainder = slotsCount % 4
     if (remainder < 2) slotsCount -= remainder
     else slotsCount += (4 - remainder)

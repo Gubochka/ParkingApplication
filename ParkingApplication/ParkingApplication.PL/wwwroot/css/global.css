@@ -6,14 +6,14 @@
     --main-font: 'Lexend Exa', sans-serif;
     --main-color: #5481a9;
     --parking-slot-color: #d9d9d9;
+    --error-color: #e57f7f;
 
     --card-color-1: #F9F9F9;
     --card-color-2: #6092C0;
 
     --card-color-hover-1: #e0e0e0;
     --card-color-hover-2: #76a8da;
-
-
+    
     --card-color-selected-2: #7cb4ef;
 }
 

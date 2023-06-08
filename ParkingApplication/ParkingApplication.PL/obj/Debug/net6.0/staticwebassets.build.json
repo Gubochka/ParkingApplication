@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CPIHLrgCgewEvtoYrtQWtv/FRBVHm6d3Dgbom/ma8rk=",
+  "Hash": "XDGOmKDAnz4z3wSRWIqiWx4YPz7Mp/NRQLBpJRw+nwk=",
   "Source": "ParkingApplication.PL",
   "BasePath": "_content/ParkingApplication.PL",
   "Mode": "Default",
@@ -151,6 +151,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\authorization.js"
+    },
+    {
+      "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\js\\global.js",
+      "SourceId": "ParkingApplication.PL",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\",
+      "BasePath": "_content/ParkingApplication.PL",
+      "RelativePath": "js/global.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\global.js"
     },
     {
       "Identity": "C:\\git\\ParkingApplication\\ParkingApplication\\ParkingApplication.PL\\wwwroot\\js\\menu_navigation.js",

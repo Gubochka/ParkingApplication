@@ -24,11 +24,17 @@
     <div class="left">
         <div class="content">
             <h1>Login here</h1>
-            <form class="auth-form" action="" method="post">
-                <input class="form-input card-style" name="email" type="email" placeholder="Email">
-                <input class="form-input card-style" name="pass" type="password" placeholder="Password">
-                <input class="form-btn card-style" type="button" value="Login">
-            </form>
+            <div class="auth-form">
+                <div>
+                    <input class="form-input card-style" id="form-email-field" type="email" placeholder="Email">
+                    <label for="form-email-field" class="error disable-selection">!</label>
+                </div>
+                <div>
+                    <input class="form-input card-style" id="form-pass-field" type="password" placeholder="Password">
+                    <label for="form-pass-field" class="error disable-selection">!</label>
+                </div>
+                <input class="form-btn card-style" type="button" value="Login" onclick="adminLogin()">
+            </div>
         </div>
     </div>
     <div class="right">

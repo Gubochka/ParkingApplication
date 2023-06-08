@@ -5,26 +5,30 @@
     <title>@ViewData["Title"] - ParkingApplication</title>
     <link rel="stylesheet" type="text/css" href="~/css/reset.css" asp-append-version="true">
     <link rel="stylesheet" type="text/css" href="~/css/global.css" asp-append-version="true">
+<script src="~/js/global.js"></script>
     @await RenderSectionAsync("Imports", required: false)
 </head>
 <body>
 <header>
     <div class="svg-logo"></div>
     <div class="header-content">
-        <a href="/">
-            <label class="header-label disable-selection">Parking</label>
-        </a>
-        <a href="/authorization">
-            <div class="card-style header-btn disable-selection">
-                <span>Login</span>
-            </div>
-        </a>
-        <a href="/logout">
-            <div class="card-style header-btn disable-selection">
-                <span>Logout</span>
-            </div>
-        </a>
+        <label class="header-label disable-selection"><a href="/">Parking</a></label>
+        <div class="card-style header-btn disable-selection" onclick="adminLogout()">
+            <span>Logout</span>
+        </div>
     </div>
+    <script>
+        const headerLabel = document.querySelector(".header-label")
+        const headerBts = document.querySelector(".header-btn")
+        const token = getCookie("bearer")
+        if(token !== "null") {
+            headerLabel.style.display = null
+            headerBts.style.display = null
+        } else {
+            headerLabel.remove()
+            headerBts.remove()
+        }
+    </script>
 </header>
 <main role="main">
     @RenderBody()

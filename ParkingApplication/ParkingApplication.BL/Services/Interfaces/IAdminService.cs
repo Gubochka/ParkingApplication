@@ -6,6 +6,7 @@ namespace ParkingApplication.BL.Services.Interfaces;
 public interface IAdminService
 {
     Task<Admin> AddAdmin(AdminModel admin);
-    Task<AdminModel>? GetAdminById(int id);
+    Task<AdminModel?> GetAdminById(int id);
+    Task<AdminModel?> GetAdminByEmail(string email);
     Task DeleteAdmin(int id);
 }
