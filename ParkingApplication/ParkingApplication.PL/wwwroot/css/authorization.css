@@ -164,3 +164,7 @@ label.error::after {
 .form-btn:hover, .form-btn:focus {
     background-color: var(--card-color-hover-2);
 }
+
+.form-btn:active {
+    cursor: wait;
+}
