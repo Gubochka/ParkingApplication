@@ -39,10 +39,10 @@ public class AuthService : IAuthService
     
     public async Task<string?> Login(AdminModel admin)
     {
-        var admins = await _adminService.GetAdminByEmail(admin.Email);
-        if (admins is null) return "EMAIL";
+        var resultAdmin = await _adminService.GetAdminByEmail(admin.Email);
+        if (resultAdmin is null) return "EMAIL";
         
-        var result = _mapper.Map<Admin>(admins);
+        var result = _mapper.Map<Admin>(resultAdmin);
         return result.Password == admin.Password ? GenerateToken(admin) : "PASSWORD";
     }
 }

@@ -5,7 +5,7 @@
     <title>@ViewData["Title"] - ParkingApplication</title>
     <link rel="stylesheet" type="text/css" href="~/css/reset.css" asp-append-version="true">
     <link rel="stylesheet" type="text/css" href="~/css/global.css" asp-append-version="true">
-<script src="~/js/global.js"></script>
+    <script src="~/js/global.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Imports", required: false)
 </head>
 <body>
@@ -20,7 +20,7 @@
     <script>
         const headerLabel = document.querySelector(".header-label")
         const headerBts = document.querySelector(".header-btn")
-        const token = getCookie("bearer")
+        const token = sessionStorage.getItem("accessToken")
         if(token !== "null") {
             headerLabel.style.display = null
             headerBts.style.display = null

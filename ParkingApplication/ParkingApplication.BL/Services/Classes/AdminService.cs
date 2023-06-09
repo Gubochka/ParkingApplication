@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using ParkingApplication.BL.Models;
 using ParkingApplication.BL.Services.Interfaces;
 using ParkingApplication.DAL.Entities;
@@ -38,5 +39,15 @@ public class AdminService : IAdminService
     public async Task DeleteAdmin(int id)
     {
         await _repository.DeleteAsync(id);
+    }
+    
+    public async Task<bool> CheckAdmin(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+        var adminEmail = jwtSecurityToken.Claims.First(claim => claim.Type == "sub").Value;
+
+        var admin = await GetAdminByEmail(adminEmail);
+        return admin is not null && _mapper.Map<Admin>(admin).IsSuperAdmin;
     }
 }

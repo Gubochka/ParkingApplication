@@ -1,5 +1,5 @@
 ﻿document.addEventListener("readystatechange", () => {
-    const token = getCookie("bearer")
+    const token = sessionStorage.getItem("accessToken")
     if(token === "null") {
         document.location.href = "/authorization"
     }

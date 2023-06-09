@@ -36,7 +36,7 @@ async function adminLogin() {
                 default:
                     setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), false)
                     setErrorField(passwordField, document.querySelector('label[for="form-pass-field"]'), false)
-                    document.cookie = `bearer=${token}`
+                    sessionStorage.setItem("accessToken", token)
                     setTimeout(() => document.location.href = "/", 1000)
                     break
             }
@@ -48,5 +48,6 @@ async function adminLogin() {
     }
     else {
         setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), true)
+        setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), false)
     }
 }
