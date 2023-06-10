@@ -41,6 +41,11 @@ public class AdminService : IAdminService
         await _repository.DeleteAsync(id);
     }
     
+    public List<Admin> GetAllAdmins()
+    {
+        return _repository.GetAll().Where(x => x.IsSuperAdmin == false).ToList();
+    }
+    
     public async Task<bool> CheckAdmin(string token)
     {
         var handler = new JwtSecurityTokenHandler();

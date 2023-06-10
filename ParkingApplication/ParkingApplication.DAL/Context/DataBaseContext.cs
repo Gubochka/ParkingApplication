@@ -42,12 +42,5 @@ public class DataBaseContext : DbContext
                     Password = _configuration["Secrets:SuperAdmin:Password"],
                     IsSuperAdmin = true,
                 });
-        builder.Entity<Admin>()
-            .HasData( new Admin {
-                Id = 2,
-                Email = "secret@gmail.com",
-                Password = "123",
-                IsSuperAdmin = false,
-            });
     }
 }

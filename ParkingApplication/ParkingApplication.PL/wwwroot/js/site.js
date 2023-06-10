@@ -1,41 +1,15 @@
-﻿document.addEventListener("readystatechange", () => {
+﻿document.addEventListener("readystatechange", async () => {
     const token = sessionStorage.getItem("accessToken")
     if(!token) adminLogout()
+    if(await checkAdmin() && !document.querySelector('.menu-btn[data-btn="settings"]')) {
+        const btnsContainer = document.querySelector(".menu-opt-btns")
+        btnsContainer.insertAdjacentHTML("beforeend", `
+        <div class="disable-selection card-style menu-btn" data-btn="settings">
+            <span data-btn="settings">Settings</span>
+        </div>
+        `)
+    }
 })
-
-async function getAllParking() {
-    if(!(await checkAdmin())) return
-
-    let token = sessionStorage.getItem("accessToken")
-    if(!token) {
-        adminLogout()
-        return
-    }
-    const response = await fetch("/getAllParking", {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-        }
-    })
-    if (response.ok === true) {
-        const parkingList = (await response.json()).value
-        const parkingListContainer = document.querySelector(".container-content")
-        parkingListContainer.innerHTML = null
-        parkingList.forEach(parking => {
-            parkingListContainer.insertAdjacentHTML("beforeend", `
-                <div class="card-style content-row">
-                    <div class="disable-selection upload-parking card" data-id="${parking.id}" onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount})">&#10531;</div>
-                    <span>${parking.name}</span>
-                    <span>${parking.floorsCount}</span>
-                    <span>${parking.slotsCount}</span>
-                    <span class="disable-selection delete-x" onclick="deleteParking(${parking.id})">&times;</span>
-                </div>
-            `)
-        })
-    }
-}
 
 function generateParkingSlots(floor, slotsCount) {
     const remainder = slotsCount % 4
@@ -119,6 +93,42 @@ function generateParkingFloors(floorsCount, slotsCount) {
     selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin, slotsCount)
 }
 
+async function getAllParking() {
+    if(!(await checkAdmin())) return
+
+    let token = sessionStorage.getItem("accessToken")
+    if(!token) {
+        adminLogout()
+        return
+    }
+    const response = await fetch("/getAllParking", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    })
+    if (response.ok === true) {
+        const parkingList = (await response.json()).value
+        const parkingListContainer = document.querySelector(".container-content.parking")
+        if(!parkingListContainer) return
+        
+        parkingListContainer.innerHTML = null
+        parkingList.forEach(parking => {
+            parkingListContainer.insertAdjacentHTML("beforeend", `
+                <div class="card-style content-row">
+                    <div class="disable-selection upload-parking card" data-id="${parking.id}" onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount})">&#10531;</div>
+                    <span>${parking.name}</span>
+                    <span>${parking.floorsCount}</span>
+                    <span>${parking.slotsCount}</span>
+                    <span class="disable-selection delete-x" onclick="deleteParking(${parking.id})">&times;</span>
+                </div>
+            `)
+        })
+    }
+}
+
 async function addNewParking() {
     if(!(await checkAdmin())) return 
     
@@ -126,7 +136,7 @@ async function addNewParking() {
     if(!token) { adminLogout(); return }
     
     const parkingName = document.querySelector("#field-parking-name")
-    if(!parkingName.value) return
+    if(!parkingName.value.trim()) return
     
     const response = await fetch("/addNewParking", {
         method: "POST",
@@ -136,7 +146,7 @@ async function addNewParking() {
             "Authorization": "Bearer " + token
         },
         body: JSON.stringify({
-            Name: parkingName.value,
+            Name: parkingName.value.trim(),
             FloorsCount: +document.querySelector("#field-floors-count").value,
             SlotsCount: +document.querySelector("#field-slots-count").value,
         })
@@ -164,5 +174,92 @@ async function deleteParking(parkingId) {
     })
     if (response.ok === true) {
         await getAllParking()
+    }
+}
+
+async function addNewAdmin() {
+    if(!(await checkAdmin())) return
+
+    const token = sessionStorage.getItem("accessToken")
+    if(!token) { adminLogout(); return }
+
+    const adminEmail = document.querySelector("#field-admin-email")
+    const adminPass = document.querySelector("#field-admin-pass")
+    if(!adminEmail.value.trim() || !isValidEmail(adminEmail.value.trim()) || !adminPass.value.trim()) return
+
+    const response = await fetch("/addNewAdmin", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            Email: adminEmail.value.trim(),
+            Password: adminPass.value.trim(),
+            IsSuperAdmin: false,
+        })
+    })
+    if (response.ok === true) {
+        adminEmail.value = null
+        adminPass.value = null
+        await getAllAdmins()
+    }
+}
+
+async function getAllAdmins() {
+    if(!(await checkAdmin())) return
+
+    let token = sessionStorage.getItem("accessToken")
+    if(!token) {
+        adminLogout()
+        return
+    }
+    const response = await fetch("/getAllAdmins", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    })
+    if (response.ok === true) {
+        const adminsList = (await response.json()).value
+        const adminsListContainer = document.querySelector(".container-content.admin")
+        if(!adminsListContainer) return
+        
+        adminsListContainer.innerHTML = null
+        adminsList.forEach(admin => {
+            adminsListContainer.insertAdjacentHTML("beforeend", `
+                <div class="card-style content-row">
+                    <span>${admin.email}</span>
+                    <span>${admin.password}</span>
+                    <span class="disable-selection delete-x" onclick="deleteAdmin(${admin.id})">&times;</span>
+                </div>
+            `)
+        })
+    }
+}
+
+async function deleteAdmin(adminId) {
+    if (!(await checkAdmin())) return
+
+    const token = sessionStorage.getItem("accessToken")
+    if (!token) {
+        adminLogout();
+        return
+    }
+
+    const response = await fetch("/deleteAdmin", {
+        method: "DELETE",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: +adminId
+    })
+    if (response.ok === true) {
+        await getAllAdmins()
     }
 }

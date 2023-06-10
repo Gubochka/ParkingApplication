@@ -184,17 +184,24 @@ main {
   box-shadow: 4px 4px 35px 4px var(--card-color-hover-2);
 }
 
-.parking-create-container {
-  width: 50%;
+.data-container {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 4px;
+}
+
+.data-container:nth-child(1) {
   padding-right: 4px;
   border-right: 2px solid var(--card-color-hover-1);
 }
 
-.parking-create-container .field-container {
+.data-container:nth-child(2) {
+  padding-left: 4px;
+}
+
+.data-container .field-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -219,7 +226,7 @@ main {
   display: inline-block;
 }
 
-.parking-list-container {
+.list-container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -227,26 +234,33 @@ main {
   margin-top: 10px;
 }
 
-.parking-list-container .container-header, .parking-list-container .container-content .content-row {
+.list-container .container-header, .list-container .container-content .content-row {
   width: 100%;
   display: grid;
-  grid-template-columns: 24px calc(50% - 18px) repeat(2, calc(25% - 18px)) 30px;
   padding: 2px;
 }
 
-.parking-list-container .container-header {
+.list-container .container-header.parking, .list-container .container-content.parking .content-row {
+  grid-template-columns: 24px calc(50% - 18px) repeat(2, calc(25% - 18px)) 30px;
+}
+
+.list-container .container-header.admin, .list-container .container-content.admin .content-row {
+  grid-template-columns: repeat(2, calc(50% - 15px)) 30px;
+}
+
+.list-container .container-header {
   height: 30px;
   background-color: var(--card-color-2);
   color: var(--card-color-1);
   align-items: center;
 }
 
-.parking-list-container .container-content {
+.list-container .container-content {
   overflow: auto;
   height: 100%;
 }
 
-.parking-list-container .container-content .content-row span {
+.list-container .container-content .content-row span {
   padding-left: 4px;
 }
 
@@ -259,4 +273,8 @@ main {
   background-color: var(--card-color-2);
   color: var(--card-color-1);
   border-radius: 50%;
+}
+
+.upload-parking:hover {
+  background-color: var(--card-color-hover-2);
 }

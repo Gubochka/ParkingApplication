@@ -1,4 +1,5 @@
-﻿const observe = ($callback, target, config, timeout = 1000) => {
+﻿const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+const observe = ($callback, target, config, timeout = 1000) => {
     const observer = new MutationObserver($callback)
     observer.observe(target, config)
     setTimeout(() => {

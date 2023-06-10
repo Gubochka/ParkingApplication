@@ -1,5 +1,4 @@
-﻿const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-const setErrorField = (field, label, isError=true) => {
+﻿const setErrorField = (field, label, isError=true) => {
     if(isError) {
         field.style.borderColor = "var(--error-color)"
         label.style.display = "block"
