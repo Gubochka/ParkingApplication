@@ -1,6 +1,6 @@
 ﻿document.addEventListener("readystatechange", () => {
     const token = sessionStorage.getItem("accessToken")
-    if(token === "null") {
+    if(!token) {
         document.location.href = "/authorization"
     }
 })
@@ -85,4 +85,35 @@ function generateParkingFloors(floorsCount=4) {
 
     floorsContainer.children[0].classList.add("selected")
     selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin)
+}
+
+async function addNewParking() {
+    if(!(await checkAdmin())) return 
+    
+    let token = sessionStorage.getItem("accessToken")
+    if(!token) {
+        adminLogout()
+        return
+    }
+    
+    const bodyRequest = {
+        Name: document.querySelector("#field-parking-name").value,
+        FloorsCount: +document.querySelector("#field-floors-count").value,
+        SlotsCount: +document.querySelector("#field-slots-count").value,
+    }
+    
+    console.log(bodyRequest)
+    
+    const response = await fetch("/addNewParking", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(bodyRequest)
+    })
+    if (response.ok === true) {
+        
+    }
 }

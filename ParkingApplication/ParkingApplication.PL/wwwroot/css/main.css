@@ -136,6 +136,7 @@ main {
 .menu-opt-content {
   height: 100%;
   background-color: var(--card-color-1);
+  padding: 8px;
 }
 
 .menu-btn {
@@ -181,4 +182,36 @@ main {
   border-radius: 50%;
   background-color: var(--card-color-hover-2);
   box-shadow: 4px 4px 35px 4px var(--card-color-hover-2);
+}
+
+.parking-create-container {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.parking-create-container div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+
+.content-input-label {
+  font-size: 1.1em;
+}
+
+.content-input {
+  height: 100%;
+  min-width: 20%;
+  width: auto;
+  border: none;
+  background: none;
+  border-bottom: 2px solid var(--font-color);
+  color: var(--font-color);
+  margin: 4px 0;
+  font-size: 1.1em;
+  padding-left: 4px;
+  display: inline-block;
 }

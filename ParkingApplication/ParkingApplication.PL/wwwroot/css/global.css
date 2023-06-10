@@ -21,6 +21,10 @@
     font-family: var(--main-font) !important;
 }
 
+input[type="button"] {
+    cursor: pointer;
+}
+
 body {
     display: flex;
     flex-direction: column;

@@ -19,14 +19,14 @@
     </div>
     <script>
         const headerLabel = document.querySelector(".header-label")
-        const headerBts = document.querySelector(".header-btn")
+        const headerBtn = document.querySelector(".header-btn")
         const token = sessionStorage.getItem("accessToken")
-        if(token !== "null") {
+        if(token) {
             headerLabel.style.display = null
-            headerBts.style.display = null
+            headerBtn.style.display = null
         } else {
             headerLabel.remove()
-            headerBts.remove()
+            headerBtn.remove()
         }
     </script>
 </header>

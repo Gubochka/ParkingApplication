@@ -9,6 +9,7 @@ public class ParkingTemplateConfiguration : IEntityTypeConfiguration<ParkingTemp
     public void Configure(EntityTypeBuilder<ParkingTemplate> builder)
     {
         builder.HasIndex(x => x.Id);
+        builder.Property(x => x.Name).HasColumnType("nvarchar(100)");
         builder.Property(x => x.FloorsCount);
         builder.Property(x => x.SlotsCount);
 

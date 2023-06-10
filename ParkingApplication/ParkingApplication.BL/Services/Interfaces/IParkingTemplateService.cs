@@ -5,7 +5,7 @@ namespace ParkingApplication.BL.Services.Interfaces;
 
 public interface IParkingTemplateService
 {
-    Task<ParkingTemplate> AddParkingTemplate(ParkingTemplateModel parkingTemplate);
+    Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token);
     Task<ParkingTemplateModel>? GetParkingTemplateById(int id);
     Task DeleteParkingTemplate(int id);
 }

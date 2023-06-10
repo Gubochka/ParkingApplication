@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParkingApplication.DAL.Context;
 
@@ -11,9 +12,11 @@ using ParkingApplication.DAL.Context;
 namespace ParkingApplication.DAL.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230609200325_added_new_admin")]
+    partial class added_new_admin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace ParkingApplication.DAL.Migrations
                             Id = 1,
                             Email = "superadmin.parking@gmail.com",
                             IsSuperAdmin = true,
-                            Password = "123"
+                            Password = "superadmin.parking@gmail.com"
                         },
                         new
                         {
@@ -162,10 +165,6 @@ namespace ParkingApplication.DAL.Migrations
 
                     b.Property<int>("FloorsCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("SlotsCount")
                         .HasColumnType("int");

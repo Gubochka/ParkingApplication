@@ -10,4 +10,5 @@ public interface IAdminService
     Task<AdminModel?> GetAdminByEmail(string email);
     Task DeleteAdmin(int id);
     Task<bool> CheckAdmin(string token);
+    Task AddParkingToAdmin(int adminId, int parkingTemplateId);
 }

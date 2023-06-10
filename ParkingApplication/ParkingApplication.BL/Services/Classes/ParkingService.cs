@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using ParkingApplication.BL.Models;
 using ParkingApplication.BL.Services.Interfaces;
 using ParkingApplication.DAL.Entities;
@@ -16,7 +17,7 @@ public class ParkingService : IParkingService
         _mapper = mapper;
         _repository = repository;
     }
-    
+
     public async Task<Parking> AddCarToParking(ParkingModel parking)
     {
         var entity = _mapper.Map<Parking>(parking);

@@ -50,4 +50,14 @@ public class AdminService : IAdminService
         var admin = await GetAdminByEmail(adminEmail);
         return admin is not null && _mapper.Map<Admin>(admin).IsSuperAdmin;
     }
+
+    public async Task AddParkingToAdmin(int adminId, int parkingTemplateId)
+    {
+        var admin = await GetAdminById(adminId);
+        if(admin is null) return;
+        admin.ParkingTemplateId = parkingTemplateId;
+
+        var entity = _mapper.Map<Admin>(admin);
+        await _repository.UpdateAsync(entity);
+    }
 }

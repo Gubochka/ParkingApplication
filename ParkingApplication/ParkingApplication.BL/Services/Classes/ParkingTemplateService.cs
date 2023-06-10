@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using ParkingApplication.BL.Models;
 using ParkingApplication.BL.Services.Interfaces;
 using ParkingApplication.DAL.Entities;
@@ -9,18 +10,25 @@ namespace ParkingApplication.BL.Services.Classes;
 public class ParkingTemplateService : IParkingTemplateService
 {
     private readonly IParkingTemplateRepository _repository;
+    private readonly IAdminService _adminService;
     private readonly IMapper _mapper;
 
-    public ParkingTemplateService(IMapper mapper, IParkingTemplateRepository repository)
+    public ParkingTemplateService(IMapper mapper, IParkingTemplateRepository repository, IAdminService adminService)
     {
         _mapper = mapper;
         _repository = repository;
+        _adminService = adminService;
     }
 
-    public async Task<ParkingTemplate> AddParkingTemplate(ParkingTemplateModel parkingTemplate)
+    public async Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token)
     {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+        var adminId = jwtSecurityToken.Claims.First(claim => claim.Type == "adminId").Value;
+        
         var entity = _mapper.Map<ParkingTemplate>(parkingTemplate);
-        return await _repository.AddAsync(entity);
+        await _repository.AddAsync(entity);
+        await _adminService.AddParkingToAdmin(Int32.Parse(adminId), entity.Id);
     }
 
     public async Task<ParkingTemplateModel>? GetParkingTemplateById(int id)

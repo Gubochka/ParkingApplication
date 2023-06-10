@@ -12,7 +12,6 @@ const setErrorField = (field, label, isError=true) => {
 async function adminLogin() {
     const emailField = document.querySelector("#form-email-field")
     const passwordField = document.querySelector("#form-pass-field")
-    
     if(isValidEmail(emailField.value.trim())) {
         const response = await fetch("/login", {
             method: "POST",
@@ -37,7 +36,7 @@ async function adminLogin() {
                     setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), false)
                     setErrorField(passwordField, document.querySelector('label[for="form-pass-field"]'), false)
                     sessionStorage.setItem("accessToken", token)
-                    setTimeout(() => document.location.href = "/", 1000)
+                    setTimeout(() => document.location.href = "/", 200)
                     break
             }
         }
@@ -48,6 +47,6 @@ async function adminLogin() {
     }
     else {
         setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), true)
-        setErrorField(emailField, document.querySelector('label[for="form-email-field"]'), false)
+        setErrorField(passwordField, document.querySelector('label[for="form-pass-field"]'), false)
     }
 }

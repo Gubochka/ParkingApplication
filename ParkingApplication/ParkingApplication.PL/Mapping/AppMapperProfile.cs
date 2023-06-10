@@ -9,6 +9,8 @@ public class AppMapperProfile : Profile
     public AppMapperProfile()
     {
         CreateMap<AdminDto, AdminModel>()
+            .ForMember(admin => admin.Id,
+                opt => opt.MapFrom(admin => admin.Id))
             .ForMember(admin => admin.Email,
                 opt => opt.MapFrom(admin => admin.Email))
             .ForMember(admin => admin.Password,
@@ -19,6 +21,8 @@ public class AppMapperProfile : Profile
                 opt => opt.MapFrom(admin => admin.IsSuperAdmin));
         
         CreateMap<AdminModel, AdminDto>()
+            .ForMember(admin => admin.Id,
+                opt => opt.MapFrom(admin => admin.Id))
             .ForMember(admin => admin.Email,
                 opt => opt.MapFrom(admin => admin.Email))
             .ForMember(admin => admin.Password,
@@ -58,12 +62,16 @@ public class AppMapperProfile : Profile
                 opt => opt.MapFrom(car => car.CarNumber));
         
         CreateMap<ParkingTemplateDto, ParkingTemplateModel>()
+            .ForMember(parkingTemplate => parkingTemplate.Name,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Name))
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
             .ForMember(parkingTemplate => parkingTemplate.SlotsCount,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount));
         
         CreateMap<ParkingTemplateModel, ParkingTemplateDto>()
+            .ForMember(parkingTemplate => parkingTemplate.Name,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Name))
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
             .ForMember(parkingTemplate => parkingTemplate.SlotsCount,

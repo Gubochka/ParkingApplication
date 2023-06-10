@@ -27,7 +27,8 @@ public class AuthService : IAuthService
             audience: AuthOptions.AUDIENCE,
             claims: new List<Claim>
             {
-                new Claim(ClaimTypes.Name, admin.Email),
+                new Claim("adminId", admin.Id.ToString()),
+                new Claim("admin", admin.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, admin.Email),
             },
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(120)),

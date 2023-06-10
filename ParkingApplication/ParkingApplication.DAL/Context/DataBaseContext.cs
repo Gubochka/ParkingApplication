@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ParkingApplication.DAL.Entities;
 using ParkingApplication.DAL.EntityConfigurations;
 
@@ -12,9 +13,12 @@ public class DataBaseContext : DbContext
     public virtual DbSet<Car> Cars { get; set; }
     public virtual DbSet<ParkingTemplate> ParkingTemplates { get; set; }
     public virtual DbSet<Parking> Parking { get; set; }
+
+    private readonly IConfiguration _configuration;
     
-    public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
+    public DataBaseContext(DbContextOptions<DataBaseContext> options, IConfiguration configuration) : base(options)
     {
+        _configuration = configuration;
     }
     
     protected override void OnModelCreating(ModelBuilder builder)
@@ -32,12 +36,18 @@ public class DataBaseContext : DbContext
     private void RegSuperAdmin(ModelBuilder builder)
     {
         builder.Entity<Admin>()
-            .HasData( new Admin
-                {
+            .HasData( new Admin {
                     Id = 1,
-                    Email = "superadmin.parking@gmail.com",
-                    Password = "123",
+                    Email = _configuration["Secrets:SuperAdmin:Email"],
+                    Password = _configuration["Secrets:SuperAdmin:Password"],
                     IsSuperAdmin = true,
                 });
+        builder.Entity<Admin>()
+            .HasData( new Admin {
+                Id = 2,
+                Email = "secret@gmail.com",
+                Password = "123",
+                IsSuperAdmin = false,
+            });
     }
 }
