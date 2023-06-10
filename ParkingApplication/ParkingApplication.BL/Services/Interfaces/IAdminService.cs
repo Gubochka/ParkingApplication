@@ -11,5 +11,5 @@ public interface IAdminService
     Task DeleteAdmin(int id);
     List<Admin> GetAllAdmins();
     Task<bool> CheckAdmin(string token);
-    Task AddParkingToAdmin(int adminId, int parkingTemplateId);
+    Task AddParkingToAdmin(AdminModel admin);
 }

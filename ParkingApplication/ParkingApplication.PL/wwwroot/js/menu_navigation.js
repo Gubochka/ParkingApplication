@@ -74,6 +74,7 @@
                             <div class="card-style container-header admin">
                                 <span>Admin email</span>
                                 <span>Password</span>
+                                <span>Parking</span>
                             </div>
                             <div class="container-content admin"></div>
                         </div>

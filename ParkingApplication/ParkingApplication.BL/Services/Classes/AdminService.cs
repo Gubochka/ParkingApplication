@@ -56,12 +56,8 @@ public class AdminService : IAdminService
         return admin is not null && _mapper.Map<Admin>(admin).IsSuperAdmin;
     }
 
-    public async Task AddParkingToAdmin(int adminId, int parkingTemplateId)
+    public async Task AddParkingToAdmin(AdminModel admin)
     {
-        var admin = await GetAdminById(adminId);
-        if(admin is null) return;
-        admin.ParkingTemplateId = parkingTemplateId;
-
         var entity = _mapper.Map<Admin>(admin);
         await _repository.UpdateAsync(entity);
     }

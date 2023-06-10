@@ -93,7 +93,7 @@ function generateParkingFloors(floorsCount, slotsCount) {
     selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin, slotsCount)
 }
 
-async function getAllParking() {
+async function getAllParking($callback=null) {
     if(!(await checkAdmin())) return
 
     let token = sessionStorage.getItem("accessToken")
@@ -126,6 +126,7 @@ async function getAllParking() {
                 </div>
             `)
         })
+        if($callback && typeof $callback === "function") $callback(parkingList)
     }
 }
 
@@ -232,11 +233,27 @@ async function getAllAdmins() {
         adminsList.forEach(admin => {
             adminsListContainer.insertAdjacentHTML("beforeend", `
                 <div class="card-style content-row">
-                    <span>${admin.email}</span>
-                    <span>${admin.password}</span>
+                    <span contenteditable="true">${admin.email}</span>
+                    <span contenteditable="true">${admin.password}</span>
+                    <span>
+                        <select onchange="addParkingToAdmin(${admin.id}, '${admin.email}', '${admin.password}', +this.value)" data-parking-id="${admin.parkingTemplateId}" class="admin-parking-select content-input"></select>
+                    </span>
                     <span class="disable-selection delete-x" onclick="deleteAdmin(${admin.id})">&times;</span>
                 </div>
             `)
+        })
+        await getAllParking((list) => {
+            const rows = adminsListContainer.querySelectorAll("select.admin-parking-select[data-parking-id]")
+            if(!rows) return
+            
+            rows.forEach(row => {
+                row.innerHTML = `<option ${row.dataset.parkingId === "null" ? "selected" : ""} disabled>Select parking</option>`
+                list.forEach(value => {
+                    row.insertAdjacentHTML("beforeend", `
+                        <option value="${value.id}" ${value.id == row.dataset.parkingId ? "selected" : ""}>${value.name}</option>
+                    `)
+                })
+            })
         })
     }
 }
@@ -258,6 +275,34 @@ async function deleteAdmin(adminId) {
             "Authorization": "Bearer " + token
         },
         body: +adminId
+    })
+    if (response.ok === true) {
+        await getAllAdmins()
+    }
+}
+
+async function addParkingToAdmin(adminId, adminEmail, adminPass, parkingId) {
+    if(!(await checkAdmin())) return
+    
+    let token = sessionStorage.getItem("accessToken")
+    if(!token) {
+        adminLogout()
+        return
+    }
+    const response = await fetch("/addParkingToAdmin", {
+        method: "PUT",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            Id: adminId,
+            Email: adminEmail,
+            Password: adminPass,
+            ParkingTemplateId: parkingId,
+            IsSuperAdmin: false
+        })
     })
     if (response.ok === true) {
         await getAllAdmins()

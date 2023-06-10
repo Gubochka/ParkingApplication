@@ -22,13 +22,8 @@ public class ParkingTemplateService : IParkingTemplateService
 
     public async Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token)
     {
-        var handler = new JwtSecurityTokenHandler();
-        var jwtSecurityToken = handler.ReadJwtToken(token);
-        var adminId = jwtSecurityToken.Claims.First(claim => claim.Type == "adminId").Value;
-        
         var entity = _mapper.Map<ParkingTemplate>(parkingTemplate);
         await _repository.AddAsync(entity);
-        await _adminService.AddParkingToAdmin(Int32.Parse(adminId), entity.Id);
     }
 
     public async Task<ParkingTemplateModel>? GetParkingTemplateById(int id)

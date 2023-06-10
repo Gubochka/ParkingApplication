@@ -29,7 +29,7 @@ public class AdminController : Controller
         return Ok();
     }
 
-    [HttpGet("getAllAdmins"), Authorize]
+    [HttpGet("getAllAdmins"), Authorize] 
     public IActionResult AddNewAdmin()
     {
         return Ok(Results.Json(_adminService.GetAllAdmins()));
@@ -39,6 +39,14 @@ public class AdminController : Controller
     public async Task<IActionResult> DeleteParking([FromBody]int id)
     {
         await _adminService.DeleteAdmin(id);
+        return Ok();
+    }
+    
+    [HttpPut("addParkingToAdmin"), Authorize]
+    public async Task<IActionResult> AddParkingToAdmin([FromBody] AdminDto admin)
+    {
+        var mapped = _mapper.Map<AdminModel>(admin);
+        await _adminService.AddParkingToAdmin(mapped);
         return Ok();
     }
 }
