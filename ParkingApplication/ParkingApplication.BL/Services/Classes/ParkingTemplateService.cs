@@ -41,4 +41,10 @@ public class ParkingTemplateService : IParkingTemplateService
     {
         await _repository.DeleteAsync(id);
     }
+
+    public List<ParkingTemplate> GetAllParking()
+    {
+        var parking = _repository.GetAll();
+        return parking.ToList();
+    }
 }

@@ -8,4 +8,5 @@ public interface IParkingTemplateService
     Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token);
     Task<ParkingTemplateModel>? GetParkingTemplateById(int id);
     Task DeleteParkingTemplate(int id);
+    List<ParkingTemplate> GetAllParking();
 }

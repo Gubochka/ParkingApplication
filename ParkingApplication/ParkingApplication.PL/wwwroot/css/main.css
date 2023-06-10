@@ -185,13 +185,16 @@ main {
 }
 
 .parking-create-container {
-  width: 35%;
+  width: 50%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 4px;
+  padding-right: 4px;
+  border-right: 2px solid var(--card-color-hover-1);
 }
 
-.parking-create-container div {
+.parking-create-container .field-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -203,7 +206,7 @@ main {
 }
 
 .content-input {
-  height: 100%;
+  height: 65%;
   min-width: 20%;
   width: auto;
   border: none;
@@ -214,4 +217,46 @@ main {
   font-size: 1.1em;
   padding-left: 4px;
   display: inline-block;
+}
+
+.parking-list-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.parking-list-container .container-header, .parking-list-container .container-content .content-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 24px calc(50% - 18px) repeat(2, calc(25% - 18px)) 30px;
+  padding: 2px;
+}
+
+.parking-list-container .container-header {
+  height: 30px;
+  background-color: var(--card-color-2);
+  color: var(--card-color-1);
+  align-items: center;
+}
+
+.parking-list-container .container-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.parking-list-container .container-content .content-row span {
+  padding-left: 4px;
+}
+
+.delete-x, .upload-parking {
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-parking {
+  background-color: var(--card-color-2);
+  color: var(--card-color-1);
+  border-radius: 50%;
 }

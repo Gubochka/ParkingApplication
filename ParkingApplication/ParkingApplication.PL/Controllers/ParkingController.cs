@@ -29,4 +29,18 @@ public class ParkingController : Controller
         
         return Ok();
     }
+
+    [HttpGet("getAllParking"), Authorize]
+    public IActionResult GetAllParking()
+    {
+        var parking = _parkingTemplateService.GetAllParking();
+        return Ok(Results.Json(parking));
+    }
+    
+    [HttpDelete("deleteParking"), Authorize]
+    public async Task<IActionResult> DeleteParking([FromBody]int id)
+    {
+        await _parkingTemplateService.DeleteParkingTemplate(id);
+        return Ok();
+    }
 }
