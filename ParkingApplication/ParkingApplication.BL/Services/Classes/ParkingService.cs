@@ -40,4 +40,9 @@ public class ParkingService : IParkingService
     {
         await _repository.DeleteCarFromParking(carId, floor, slot);
     }
+
+    public List<Parking> GetParkingSlotsData(int parkingId, int floor)
+    {
+        return _repository.GetAll().Where(x => x.FloorNumber == floor && x.ParkingTemplateId == parkingId).ToList();
+    }
 }

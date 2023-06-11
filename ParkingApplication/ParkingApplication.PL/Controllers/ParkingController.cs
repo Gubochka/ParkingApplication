@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkingApplication.BL.Models;
@@ -11,13 +12,15 @@ public class ParkingController : Controller
 {
     private readonly ILogger<ParkingController> _logger;
     private readonly IParkingTemplateService _parkingTemplateService;
+    private readonly IParkingService _parkingService;
     private readonly IMapper _mapper;
 
-    public ParkingController(ILogger<ParkingController> logger, IMapper mapper, IParkingTemplateService parkingTemplateService)
+    public ParkingController(ILogger<ParkingController> logger, IMapper mapper, IParkingTemplateService parkingTemplateService, IParkingService parkingService)
     {
         _logger = logger;
         _mapper = mapper;
         _parkingTemplateService = parkingTemplateService;
+        _parkingService = parkingService;
     }
 
     [HttpPost("addNewParking"), Authorize]
@@ -42,5 +45,12 @@ public class ParkingController : Controller
     {
         await _parkingTemplateService.DeleteParkingTemplate(id);
         return Ok();
+    }
+    
+    [HttpPost("getParkingSlotsData"), Authorize]
+    public async Task<IActionResult> GetParkingSlotsData([FromBody]RequestSlotsDto request)
+    {
+        var result = _parkingService.GetParkingSlotsData(request.ParkingId, request.Floor);
+        return Ok(Results.Json(result));
     }
 }

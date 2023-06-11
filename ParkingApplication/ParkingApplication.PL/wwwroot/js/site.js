@@ -1,17 +1,19 @@
 ﻿document.addEventListener("readystatechange", async () => {
-    const token = sessionStorage.getItem("accessToken")
-    if(!token) adminLogout()
-    if(await checkAdmin() && !document.querySelector('.menu-btn[data-btn="settings"]')) {
-        const btnsContainer = document.querySelector(".menu-opt-btns")
-        btnsContainer.insertAdjacentHTML("beforeend", `
+    if (document.readyState === "complete") {
+        const token = sessionStorage.getItem("accessToken")
+        if(!token) adminLogout()
+        if(await checkAdmin() && !document.querySelector('.menu-btn[data-btn="settings"]')) {
+            const btnsContainer = document.querySelector(".menu-opt-btns")
+            btnsContainer.insertAdjacentHTML("beforeend", `
         <div class="disable-selection card-style menu-btn" data-btn="settings">
             <span data-btn="settings">Settings</span>
         </div>
         `)
+        }
     }
 })
 
-function generateParkingSlots(floor, slotsCount) {
+function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
     const remainder = slotsCount % 4
     if (remainder < 2) slotsCount -= remainder
     else slotsCount += (4 - remainder)
@@ -33,12 +35,16 @@ function generateParkingSlots(floor, slotsCount) {
                 const slotContainer = document.createElement("abbr")
                 slotContainer.classList.add("parking-floor-slot")
                 
-                const g = Math.floor(Math.random() * (2 - 0 + 1) + 0)
-                if(g === 1) slotContainer.classList.add("busy")
-                
                 slotContainer.title = `Floor: ${floor}\nSlot: ${currentSlot}`
                 slotContainer.dataset.floor = floor
                 slotContainer.dataset.slot = currentSlot
+                slotContainer.dataset.parkingId = parkingId
+
+                const slotData = slotsData.find(data=> data.slotNumber === currentSlot);
+                if(slotData) {
+                    slotContainer.classList.add("busy")
+                }
+                
                 underRowContainer.insertAdjacentElement("beforeend", slotContainer)
                 currentSlot++
             }
@@ -48,11 +54,33 @@ function generateParkingSlots(floor, slotsCount) {
     }
 }
 
-function getSlotsByParkingFloor(floor, slotsCount) {
-    generateParkingSlots(floor, slotsCount)
+async function getSlotsByParkingFloor(floor, slotsCount, parkingId) {
+
+    let token = sessionStorage.getItem("accessToken")
+    if(!token) {
+        adminLogout()
+        return
+    }
+    const response = await fetch("/getParkingSlotsData", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            parkingId: +parkingId,
+            floor: +floor
+        })
+    })
+    if (response.ok === true) {
+        const slotsData = (await response.json()).value
+        console.log(slotsData)
+        generateParkingSlots(floor, slotsCount, parkingId, slotsData)
+    }
 }
 
-function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin, slotsCount) {
+async function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin, slotsCount, parkingId) {
     for (let i = 0; i < floorsContainer.children.length; i++) {
         const resetElement = floorsContainer.children[i]
         resetElement.style.marginBottom = `${(i-(floorsCount/2 - (floorsCount%2)))*floorsMargin}px`
@@ -68,11 +96,11 @@ function selectFloor(selectedElement, floorsContainer, floorsCount, floorsMargin
         marginBottom -= 60
         element.style.marginBottom = `${marginBottom}px`
     })
-    getSlotsByParkingFloor(+selectedElement.dataset.index+1, slotsCount)
+    await getSlotsByParkingFloor(+selectedElement.dataset.index+1, slotsCount, parkingId)
 }
 
-function generateParkingFloors(floorsCount, slotsCount) {
-    const floorsMargin = 70
+async function generateParkingFloors(floorsCount, slotsCount, parkingId) {
+    const floorsMargin = 55
     
     const floorsContainer = document.querySelector(".parking-floors-container")
     floorsContainer.innerHTML = null
@@ -82,15 +110,15 @@ function generateParkingFloors(floorsCount, slotsCount) {
         floorElement.style.marginBottom = `${(floor-(floorsCount/2 - (floorsCount%2)))*floorsMargin}px`
         floorElement.dataset.index = floor
         
-        floorElement.addEventListener("click", function () {
-            selectFloor(this, floorsContainer, floorsCount, floorsMargin, slotsCount)
+        floorElement.addEventListener("click",  async function () {
+            await selectFloor(this, floorsContainer, floorsCount, floorsMargin, slotsCount, parkingId)
         });
         
         floorsContainer.insertAdjacentElement("beforeend", floorElement)
     }
 
     floorsContainer.children[0].classList.add("selected")
-    selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin, slotsCount)
+    await selectFloor(floorsContainer.children[0], floorsContainer, floorsCount, floorsMargin, slotsCount, parkingId)
 }
 
 async function getAllParking($callback=null) {
@@ -118,10 +146,11 @@ async function getAllParking($callback=null) {
         parkingList.forEach(parking => {
             parkingListContainer.insertAdjacentHTML("beforeend", `
                 <div class="card-style content-row">
-                    <div class="disable-selection upload-parking card" data-id="${parking.id}" onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount})">&#10531;</div>
+                    <div class="disable-selection upload-parking card" data-id="${parking.id}" onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount}, ${parking.id})">&#10531;</div>
                     <span>${parking.name}</span>
                     <span>${parking.floorsCount}</span>
                     <span>${parking.slotsCount}</span>
+                    <span>${parking.price}$</span>
                     <span class="disable-selection delete-x" onclick="deleteParking(${parking.id})">&times;</span>
                 </div>
             `)
@@ -137,7 +166,8 @@ async function addNewParking() {
     if(!token) { adminLogout(); return }
     
     const parkingName = document.querySelector("#field-parking-name")
-    if(!parkingName.value.trim()) return
+    const parkingPrice = document.querySelector("#field-price")
+    if(!parkingName.value.trim() || !parkingPrice) return
     
     const response = await fetch("/addNewParking", {
         method: "POST",
@@ -150,10 +180,12 @@ async function addNewParking() {
             Name: parkingName.value.trim(),
             FloorsCount: +document.querySelector("#field-floors-count").value,
             SlotsCount: +document.querySelector("#field-slots-count").value,
+            Price: +parkingPrice.value,
         })
     })
     if (response.ok === true) {
         parkingName.value = null
+        parkingPrice.value = null
         await getAllParking()
     }
 }
@@ -308,3 +340,4 @@ async function addParkingToAdmin(adminId, adminEmail, adminPass, parkingId) {
         await getAllAdmins()
     }
 }
+

@@ -12,6 +12,7 @@ public class ParkingTemplateConfiguration : IEntityTypeConfiguration<ParkingTemp
         builder.Property(x => x.Name).HasColumnType("nvarchar(100)");
         builder.Property(x => x.FloorsCount);
         builder.Property(x => x.SlotsCount);
+        builder.Property(x => x.Price);
 
         builder
             .HasMany(x => x.Parkings)

@@ -140,3 +140,7 @@ main {
     border-radius: 10px;
     border: none;
 }
+
+.none-border {
+    border: none !important;
+}

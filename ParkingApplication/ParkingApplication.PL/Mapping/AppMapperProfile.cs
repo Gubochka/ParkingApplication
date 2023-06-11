@@ -67,7 +67,9 @@ public class AppMapperProfile : Profile
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
             .ForMember(parkingTemplate => parkingTemplate.SlotsCount,
-                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount));
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount))
+            .ForMember(parkingTemplate => parkingTemplate.Price,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Price));
         
         CreateMap<ParkingTemplateModel, ParkingTemplateDto>()
             .ForMember(parkingTemplate => parkingTemplate.Name,
@@ -75,7 +77,9 @@ public class AppMapperProfile : Profile
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.FloorsCount))
             .ForMember(parkingTemplate => parkingTemplate.SlotsCount,
-                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount));
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.SlotsCount))
+            .ForMember(parkingTemplate => parkingTemplate.Price,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Price));
         
         CreateMap<ParkingDto, ParkingModel>()
             .ForMember(parking => parking.CarId,

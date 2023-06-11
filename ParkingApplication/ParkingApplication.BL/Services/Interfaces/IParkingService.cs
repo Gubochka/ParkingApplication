@@ -9,4 +9,5 @@ public interface IParkingService
     Task<int>? FindCarOnParking(int floor, int slot);
     IQueryable<ParkingModel>? GetAllCarsOnFloor(int floor);
     Task DeleteCarFromParking(int carId, int floor, int slot);
+    List<Parking> GetParkingSlotsData(int parkingId, int floor);
 }

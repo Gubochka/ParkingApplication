@@ -214,16 +214,17 @@ main {
 
 .content-input {
   height: 65%;
-  min-width: 20%;
+  min-width: 40%;
   width: auto;
   border: none;
   background: none;
   border-bottom: 2px solid var(--font-color);
   color: var(--font-color);
   margin: 4px 0;
-  font-size: 1.1em;
+  font-size: 1em;
   padding-left: 4px;
   display: inline-block;
+  letter-spacing: -1px;
 }
 
 .list-container {
@@ -241,7 +242,7 @@ main {
 }
 
 .list-container .container-header.parking, .list-container .container-content.parking .content-row {
-  grid-template-columns: 24px calc(50% - 18px) repeat(2, calc(25% - 18px)) 30px;
+  grid-template-columns: 24px calc(40% - 14px) repeat(3, calc(20% - 14px)) 32px;
 }
 
 .list-container .container-header.admin, .list-container .container-content.admin .content-row {
@@ -253,6 +254,10 @@ main {
   background-color: var(--card-color-2);
   color: var(--card-color-1);
   align-items: center;
+}
+
+.list-container .container-header span {
+  overflow: hidden;
 }
 
 .list-container .container-content {
