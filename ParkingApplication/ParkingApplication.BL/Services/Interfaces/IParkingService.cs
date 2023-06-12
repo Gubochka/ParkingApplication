@@ -6,9 +6,6 @@ namespace ParkingApplication.BL.Services.Interfaces;
 public interface IParkingService
 {
     Task<Parking> AddCarToParking(ParkingModel parking);
-    Task<int>? FindCarOnParking(int floor, int slot);
-    IQueryable<ParkingModel>? GetAllCarsOnFloor(int floor);
-    Task DeleteCarFromParking(int carId, int floor, int slot);
     List<Parking> GetParkingSlotsData(int parkingId, int floor);
     Task<ReservationDataModel?> GetSlotData(int parkingId, int floor, int? slot);
     Task<List<ReservationDataModel>> GetHistoryForFloor(int parkingId, int floor);

@@ -31,9 +31,8 @@ public class ParkingController : Controller
     [HttpPost("addNewParking"), Authorize]
     public async Task<IActionResult> AddNewParking([FromBody]ParkingTemplateDto parking)
     {
-        var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         var mapped = _mapper.Map<ParkingTemplateModel>(parking);
-        await _parkingTemplateService.AddParkingTemplate(mapped, token);
+        await _parkingTemplateService.AddParkingTemplate(mapped);
         
         return Ok();
     }

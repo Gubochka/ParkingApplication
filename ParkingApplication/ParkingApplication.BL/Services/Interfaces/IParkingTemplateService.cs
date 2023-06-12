@@ -5,8 +5,7 @@ namespace ParkingApplication.BL.Services.Interfaces;
 
 public interface IParkingTemplateService
 {
-    Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token);
-    Task<ParkingTemplateModel>? GetParkingTemplateById(int id);
+    Task AddParkingTemplate(ParkingTemplateModel parkingTemplate);
     Task DeleteParkingTemplate(int id);
     List<ParkingTemplate> GetAllParking();
     Task<float> GetPriceByDateTime(DateTime dateTime, int parkingId);

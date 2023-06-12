@@ -25,15 +25,4 @@ public class CarService : ICarService
                      await _repository.AddAsync(entity);
         return _mapper.Map<CarModel>(result);
     }
-
-    public async Task<CarModel>? GetCarById(int id)
-    {
-        var entity = await _repository.GetByIdAsync(id);
-        return _mapper.Map<CarModel>(entity);
-    }
-
-    public async Task DeleteCar(int id)
-    {
-        await _repository.DeleteAsync(id);
-    }
 }

@@ -20,16 +20,10 @@ public class ParkingTemplateService : IParkingTemplateService
         _adminService = adminService;
     }
 
-    public async Task AddParkingTemplate(ParkingTemplateModel parkingTemplate, string token)
+    public async Task AddParkingTemplate(ParkingTemplateModel parkingTemplate)
     {
         var entity = _mapper.Map<ParkingTemplate>(parkingTemplate);
         await _repository.AddAsync(entity);
-    }
-
-    public async Task<ParkingTemplateModel>? GetParkingTemplateById(int id)
-    {
-        var entity = await _repository.GetByIdAsync(id);
-        return _mapper.Map<ParkingTemplateModel>(entity);
     }
 
     public async Task DeleteParkingTemplate(int id)

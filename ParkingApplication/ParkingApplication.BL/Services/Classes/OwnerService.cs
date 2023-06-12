@@ -25,17 +25,6 @@ public class OwnerService : IOwnerService
         return _mapper.Map<OwnerModel>(result);
     }
 
-    public async Task<OwnerModel>? GetOwnerById(int id)
-    {
-        var entity = await _repository.GetByIdAsync(id);
-        return _mapper.Map<OwnerModel>(entity);
-    }
-
-    public async Task DeleteOwner(int id)
-    {
-        await _repository.DeleteAsync(id);
-    }
-
     public List<OwnerModel> GetAllOwners()
     {
         var entities = _repository.GetAll().ToList();

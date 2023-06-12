@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
+﻿using AutoMapper;
 using ParkingApplication.BL.Models;
 using ParkingApplication.BL.Services.Interfaces;
 using ParkingApplication.DAL.Entities;
@@ -26,23 +25,6 @@ public class ParkingService : IParkingService
     {
         var entity = _mapper.Map<Parking>(parking);
         return await _repository.AddAsync(entity);
-    }
-
-    public async Task<int>? FindCarOnParking(int floor, int slot)
-    {
-        var id = await _repository.FindCarOnParking(floor, slot);
-        return id;
-    }
-
-    public IQueryable<ParkingModel>? GetAllCarsOnFloor(int floor)
-    {
-        var entities = _repository.GetAllCarsOnFloor(floor);
-        return _mapper.ProjectTo<ParkingModel>(entities);
-    }
-
-    public async Task DeleteCarFromParking(int carId, int floor, int slot)
-    {
-        await _repository.DeleteCarFromParking(carId, floor, slot);
     }
 
     public List<Parking> GetParkingSlotsData(int parkingId, int floor)
