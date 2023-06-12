@@ -10,12 +10,14 @@ namespace ParkingApplication.BL.Services.Classes;
 public class AdminService : IAdminService
 {
     private readonly IAdminRepository _repository;
+    private readonly IParkingTemplateRepository _parkingTemplateRepository;
     private readonly IMapper _mapper;
 
-    public AdminService(IMapper mapper, IAdminRepository repository)
+    public AdminService(IMapper mapper, IAdminRepository repository, IParkingTemplateRepository parkingTemplateRepository)
     {
         _mapper = mapper;
         _repository = repository;
+        _parkingTemplateRepository = parkingTemplateRepository;
     }
 
     public async Task<Admin> AddAdmin(AdminModel admin)
@@ -60,5 +62,16 @@ public class AdminService : IAdminService
     {
         var entity = _mapper.Map<Admin>(admin);
         await _repository.UpdateAsync(entity);
+    }
+
+    public async Task<ParkingTemplateModel?> GetGetCurrentParkingForAdmin(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+        var adminEmail = jwtSecurityToken.Claims.First(claim => claim.Type == "sub").Value;
+        var admin = await GetAdminByEmail(adminEmail);
+        return admin is not null ?
+            _mapper.Map<ParkingTemplateModel>(_parkingTemplateRepository.GetAll().FirstOrDefault(x => admin.ParkingTemplateId == x.Id))
+            : null;
     }
 }

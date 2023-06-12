@@ -12,4 +12,5 @@ public interface IAdminService
     List<Admin> GetAllAdmins();
     Task<bool> CheckAdmin(string token);
     Task AddParkingToAdmin(AdminModel admin);
+    Task<ParkingTemplateModel?> GetGetCurrentParkingForAdmin(string token);
 }

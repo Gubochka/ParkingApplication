@@ -68,6 +68,8 @@ public class AppMapperProfile : Profile
                 opt => opt.MapFrom(car => car.CarNumber));
         
         CreateMap<ParkingTemplateDto, ParkingTemplateModel>()
+            .ForMember(parkingTemplate => parkingTemplate.Id,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Id))
             .ForMember(parkingTemplate => parkingTemplate.Name,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.Name))
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,
@@ -78,6 +80,8 @@ public class AppMapperProfile : Profile
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.Price));
         
         CreateMap<ParkingTemplateModel, ParkingTemplateDto>()
+            .ForMember(parkingTemplate => parkingTemplate.Id,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Id))
             .ForMember(parkingTemplate => parkingTemplate.Name,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.Name))
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,

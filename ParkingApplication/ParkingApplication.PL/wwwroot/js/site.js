@@ -11,8 +11,7 @@
                 </div>
             `)
         } else if(!isSuperAdmin) {
-            // getting parking data for admin
-            // and set selectedParking to sessionStorage
+            await getCurrentParkingForAdmin()
         }
         const selectedParking = sessionStorage.getItem("selectedParking")
         if(selectedParking) {
@@ -452,5 +451,23 @@ async function reservationCarToParking() {
         carNumber.value = null
         await getAllOwnersNames()
         await getSlotsByParkingFloor(slotData.floor, parkingData.slotsCount, parkingData.parkingId)
+    }
+}
+
+async function getCurrentParkingForAdmin() {
+    const token = checkToken()
+    const response = await fetch("/getCurrentParkingForAdmin", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    })
+    if (response.ok === true) {
+        const responseData = (await response.json()).value
+        responseData.parkingId = responseData.id
+        delete responseData.id
+        if(responseData) sessionStorage.setItem("selectedParking", JSON.stringify(responseData))
     }
 }

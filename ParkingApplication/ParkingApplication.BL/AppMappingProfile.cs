@@ -70,6 +70,8 @@ public class AppMappingProfile : Profile
                 opt => opt.MapFrom(car => car.CarNumber));
         
         CreateMap<ParkingTemplateModel, ParkingTemplate>()
+            .ForMember(parkingTemplate => parkingTemplate.Id,
+                opt => opt.MapFrom(parkingTemplate => parkingTemplate.Id))
             .ForMember(parkingTemplate => parkingTemplate.Name,
                 opt => opt.MapFrom(parkingTemplate => parkingTemplate.Name))
             .ForMember(parkingTemplate => parkingTemplate.FloorsCount,

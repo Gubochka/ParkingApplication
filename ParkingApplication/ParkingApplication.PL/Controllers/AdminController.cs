@@ -49,4 +49,12 @@ public class AdminController : Controller
         await _adminService.AddParkingToAdmin(mapped);
         return Ok();
     }
+
+    [HttpGet("getCurrentParkingForAdmin"), Authorize]
+    public async Task<IActionResult> GetCurrentParkingForAdmin()
+    {
+        var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var result = await _adminService.GetGetCurrentParkingForAdmin(token);
+        return Ok(Results.Json(result));
+    }
 }
