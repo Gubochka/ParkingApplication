@@ -10,5 +10,6 @@ public interface IParkingService
     IQueryable<ParkingModel>? GetAllCarsOnFloor(int floor);
     Task DeleteCarFromParking(int carId, int floor, int slot);
     List<Parking> GetParkingSlotsData(int parkingId, int floor);
+    Task<ReservationDataModel?> GetSlotData(int parkingId, int floor, int? slot);
     Task<List<ReservationDataModel>> GetHistoryForFloor(int parkingId, int floor);
 }

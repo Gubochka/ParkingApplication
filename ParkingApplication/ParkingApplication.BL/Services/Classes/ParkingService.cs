@@ -11,13 +11,15 @@ public class ParkingService : IParkingService
 {
     private readonly IParkingRepository _repository;
     private readonly ICarRepository _carRepository;
+    private readonly IOwnerRepository _ownerRepository;
     private readonly IMapper _mapper;
 
-    public ParkingService(IMapper mapper, IParkingRepository repository, ICarRepository carRepository)
+    public ParkingService(IMapper mapper, IParkingRepository repository, ICarRepository carRepository, IOwnerRepository ownerRepository)
     {
         _mapper = mapper;
         _repository = repository;
         _carRepository = carRepository;
+        _ownerRepository = ownerRepository;
     }
 
     public async Task<Parking> AddCarToParking(ParkingModel parking)
@@ -49,6 +51,21 @@ public class ParkingService : IParkingService
         return _repository.GetAll().Where(x => x.FloorNumber == floor 
                                                && x.ParkingTemplateId == parkingId
                                                && x.StandsUntil > currentDateTime).ToList();
+    }
+
+    public async Task<ReservationDataModel?> GetSlotData(int parkingId, int floor, int? slot)
+    {
+        var parking = _repository.GetAll().FirstOrDefault(x => x.ParkingTemplateId == parkingId && x.FloorNumber == floor && x.SlotNumber == slot);
+        if (parking is null) return null;
+
+        var car = await _carRepository.GetByIdAsync(parking.CarId);
+        var owner = await _ownerRepository.GetByIdAsync(car.OwnerId);
+        return new ReservationDataModel
+        {
+            OwnerData = _mapper.Map<OwnerModel>(owner),
+            ParkingData = _mapper.Map<ParkingModel>(parking),
+            CarData = _mapper.Map<CarModel>(car)
+        };
     }
 
     public async Task<List<ReservationDataModel>> GetHistoryForFloor(int parkingId, int floor)

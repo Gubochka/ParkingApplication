@@ -86,6 +86,13 @@ public class ParkingController : Controller
         return Ok();
     }
     
+    [HttpPost("getSlotData"), Authorize]
+    public async Task<IActionResult> GetSlotData([FromBody]RequestSlotsDto request)
+    {
+        var result = _mapper.Map<ReservationDataDto>(await _parkingService.GetSlotData(request.ParkingId, request.Floor, request.Slot));
+        return Ok(Results.Json(result));
+    }
+    
     [HttpPost("getHistoryForFloor"), Authorize]
     public async Task<IActionResult> GetHistoryForFloor([FromBody]RequestSlotsDto request)
     {

@@ -205,7 +205,25 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+}
+
+.data-container.info {
+  justify-content: space-between;
+}
+
+.data-container .info {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+span.info-span {
+  border-bottom: 2px solid var(--font-color);
+  color: var(--font-color);
+  padding: 0 5px;
+  font-size: 0.9em;
+  font-style: italic;
 }
 
 .content-input-label {

@@ -8,29 +8,30 @@ async function selectTab(tabType) {
     const targetsList = ["info", "reservation", "history", "settings"]
     const selectedSlot = sessionStorage.getItem("selectedSlot")
     const selectedParking = sessionStorage.getItem("selectedParking")
-    let parkingData, slotData;
+    let parkingData;
     if(targetsList.includes(tabType)) {
         contentElement.innerHTML = null
         let callback = () => null
         sessionStorage.setItem("selectedTab", tabType)
         switch (tabType) {
             case "info":
-                callback = async () => {
-                    if(!selectedSlot || !selectedParking) return
-                    parkingData = JSON.parse(selectedParking)
-                    slotData = JSON.parse(selectedSlot)
-                    await getSlotData(slotData.floor, slotData.slot, parkingData.parkingId)
-                }
+                 callback = async () => {
+                     if(!selectedSlot || !selectedParking) return
+                     const slotData = JSON.parse(selectedSlot)
+                     parkingData = JSON.parse(selectedParking)
+                     if(slotData.busy)
+                         await getSlotData(slotData.floor, slotData.slot, parkingData.parkingId)
+                 }
                 break
             case "reservation":
                 callback = getAllOwnersNames
                 break
             case "history":
                 callback = async () => {
-                    const selectedFloor = document.querySelector("div.parking-floor.selected").dataset.index+1
+                    const selectedFloor = document.querySelector("div.parking-floor.selected")
                     if(!selectedFloor || !selectedParking) return
                     parkingData = JSON.parse(selectedParking)
-                    await getHistoryForFloor(selectedFloor, parkingData.parkingId)
+                    await getHistoryForFloor(selectedFloor.dataset.index+1, parkingData.parkingId)
                 }
                 break
             case "settings":
@@ -40,6 +41,7 @@ async function selectTab(tabType) {
                 }
                 break
         }
+        
         observe(() => {
             callback()
         }, contentElement, {childList: true}, 5000)
@@ -55,6 +57,37 @@ async function selectTab(tabType) {
                     contentElement.innerHTML = `At the moment, there is no information about this slot! It's not busy!`
                     return
                 }
+                contentElement.insertAdjacentHTML("afterbegin", `
+                    <div class="data-container none-border info" style="width: 100%;">
+                        <div class="info header">
+                            <div class="field-container">
+                                <label class="content-input-label">Owner: <span id="info-owner-name" class="info-span"></span></label>
+                            </div>
+                            <div class="field-container">
+                                <label class="content-input-label">Phone number: <span id="info-owner-pnumber" class="info-span"></span></label>
+                            </div>
+                            <div class="field-container">
+                                <label class="content-input-label">Car name: <span id="info-car-name" class="info-span"></span></label>
+                            </div>
+                            <div class="field-container">
+                                <label class="content-input-label">Car number: <span id="info-car-number" class="info-span"></span></label>
+                            </div>
+                        </div>
+                        <div class="info footer"> 
+                            <div class="field-container">
+                                <label class="content-input-label">Floor: <span id="info-floor" class="info-span"></span></label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label class="content-input-label">Slot: <span id="info-slot" class="info-span"></span></label>
+                            </div>
+                            <div class="field-container">
+                                <label class="content-input-label">Stands Until: <span id="info-stands-until" class="info-span"></span></label>
+                            </div>
+                            <div class="field-container">
+                                <label class="content-input-label">Price: <span id="info-price" class="info-span"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                `)
                 break
             case "reservation":
                 if(!selectedSlot) {
@@ -108,8 +141,8 @@ async function selectTab(tabType) {
                     return
                 }
                 contentElement.insertAdjacentHTML("afterbegin", `
-                    <div class="data-container none-border" style="width: 100%">
-                        <div class="list-container">
+                    <div class="data-container none-border" style="width: 100%;">
+                        <div class="list-container" style="margin-top: 0">
                             <div class="card-style container-header history">
                                 <span>Car name</span>
                                 <span>Car number</span>

@@ -73,13 +73,7 @@ function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
                     const selectedBefore = document.querySelector("abbr.parking-floor-slot.selected")
                     if(selectedBefore) selectedBefore.classList.remove("selected")
                     this.classList.add("selected")
-                    const tabType = sessionStorage.getItem("selectedTab")
-                    if(tabType && tabType === "reservation" && slotIsBusy) {
-                        const contentElement = document.querySelector(".menu-opt-content")
-                        contentElement.innerHTML = `At the moment, the slot is busy! To view detailed information, go to the INFO tab.`
-                    } else if(tabType) {
-                        await selectTab(tabType)
-                    }
+                    await selectTab(sessionStorage.getItem("selectedTab"))
                 }
                 
                 underRowContainer.insertAdjacentElement("beforeend", slotContainer)
@@ -314,7 +308,7 @@ async function getAllAdmins() {
                 row.innerHTML = `<option ${row.dataset.parkingId === "null" ? "selected" : ""} disabled>Select parking</option>`
                 list.forEach(value => {
                     row.insertAdjacentHTML("beforeend", `
-                        <option value="${value.id}" ${value.id == row.dataset.parkingId ? "selected" : ""}>${value.name}</option>
+                        <option value="${value.id}" ${+value.id === +row.dataset.parkingId ? "selected" : ""}>${value.name}</option>
                     `)
                 })
             })
@@ -479,6 +473,7 @@ async function getCurrentParkingForAdmin() {
 }
 
 async function getSlotData(floor, slot, parkingId) {
+    console.log(floor, slot, parkingId)
     const token = checkToken()
     const response = await fetch("/getSlotData", {
         method: "POST",
@@ -495,7 +490,15 @@ async function getSlotData(floor, slot, parkingId) {
     })
     if (response.ok === true) {
         const responseData = (await response.json()).value
-        console.log(responseData)
+        const dataFields = document.querySelectorAll("span.info-span")
+        dataFields[0].innerHTML = responseData.ownerData.fullName
+        dataFields[1].innerHTML = responseData.ownerData.phoneNumber
+        dataFields[2].innerHTML = responseData.carData.carName
+        dataFields[3].innerHTML = responseData.carData.carNumber
+        dataFields[4].innerHTML = responseData.parkingData.floorNumber
+        dataFields[5].innerHTML = responseData.parkingData.slotNumber
+        dataFields[6].innerHTML = responseData.parkingData.standsUntil.replace("T", ", ")
+        dataFields[7].innerHTML = responseData.parkingData.price+"$"
     }
 }
 
@@ -526,7 +529,7 @@ async function getHistoryForFloor(floor, parkingId) {
                         <span>${data.parkingData.floorNumber}</span>
                         <span>${data.parkingData.slotNumber}</span>
                         <span>${data.parkingData.price}$</span>
-                        <span>${data.parkingData.standsUntil}</span>
+                        <span>${data.parkingData.standsUntil.replace("T", ", ")}</span>
                     </div>
                 `)
             })
