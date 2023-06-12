@@ -1,7 +1,8 @@
 ﻿const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 const getTodayDateTime = () => {
-    let parts = new Date().toISOString().replace("Z", "").split(':')
-    return [parts[0], parts[1]].join(':')
+    let parts = new Date().toISOString().replace("Z", "").split('T')
+    parts[1] = "00:00"
+    return parts.join('T')
 }
 const observe = ($callback, target, config, timeout = 1000) => {
     const observer = new MutationObserver(((mutationsList, observer) => {

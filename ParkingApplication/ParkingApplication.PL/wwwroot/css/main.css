@@ -249,6 +249,10 @@ main {
   grid-template-columns: calc(45% - 10px) calc(25% - 10px) calc(30% - 10px) 30px;
 }
 
+.list-container .container-header.history, .list-container .container-content.history .content-row {
+  grid-template-columns: 20% 20% 10% 10% 15% 25%;
+}
+
 .list-container .container-header {
   height: 30px;
   background-color: var(--card-color-2);

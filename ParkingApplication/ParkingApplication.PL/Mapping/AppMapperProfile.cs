@@ -114,5 +114,21 @@ public class AppMapperProfile : Profile
                 opt => opt.MapFrom(parking => parking.StandsUntil))
             .ForMember(parking => parking.Price,
                 opt => opt.MapFrom(parking => parking.Price));
+
+        CreateMap<ReservationDataDto, ReservationDataModel>()
+            .ForMember(parking => parking.OwnerData,
+                opt => opt.MapFrom(parking => parking.OwnerData))
+            .ForMember(parking => parking.CarData,
+                opt => opt.MapFrom(parking => parking.CarData))
+            .ForMember(parking => parking.ParkingData,
+                opt => opt.MapFrom(parking => parking.ParkingData));
+
+        CreateMap<ReservationDataModel, ReservationDataDto>()
+            .ForMember(parking => parking.OwnerData,
+                opt => opt.MapFrom(parking => parking.OwnerData))
+            .ForMember(parking => parking.CarData,
+                opt => opt.MapFrom(parking => parking.CarData))
+            .ForMember(parking => parking.ParkingData,
+                opt => opt.MapFrom(parking => parking.ParkingData));
     }
 }

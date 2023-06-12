@@ -6,17 +6,32 @@
 async function selectTab(tabType) {
     const contentElement = document.querySelector(".menu-opt-content")
     const targetsList = ["info", "reservation", "history", "settings"]
+    const selectedSlot = sessionStorage.getItem("selectedSlot")
+    const selectedParking = sessionStorage.getItem("selectedParking")
+    let parkingData, slotData;
     if(targetsList.includes(tabType)) {
         contentElement.innerHTML = null
         let callback = () => null
         sessionStorage.setItem("selectedTab", tabType)
         switch (tabType) {
             case "info":
+                callback = async () => {
+                    if(!selectedSlot || !selectedParking) return
+                    parkingData = JSON.parse(selectedParking)
+                    slotData = JSON.parse(selectedSlot)
+                    await getSlotData(slotData.floor, slotData.slot, parkingData.parkingId)
+                }
                 break
             case "reservation":
                 callback = getAllOwnersNames
                 break
             case "history":
+                callback = async () => {
+                    const selectedFloor = document.querySelector("div.parking-floor.selected").dataset.index+1
+                    if(!selectedFloor || !selectedParking) return
+                    parkingData = JSON.parse(selectedParking)
+                    await getHistoryForFloor(selectedFloor, parkingData.parkingId)
+                }
                 break
             case "settings":
                 callback = async () => {
@@ -30,7 +45,6 @@ async function selectTab(tabType) {
         }, contentElement, {childList: true}, 5000)
     }
     if (contentElement) {
-        const selectedSlot = sessionStorage.getItem("selectedSlot")
         switch (tabType) {
             case "info":
                 if(!selectedSlot) {
@@ -38,7 +52,7 @@ async function selectTab(tabType) {
                     return
                 }
                 if(!JSON.parse(selectedSlot).busy) {
-                    contentElement.innerHTML = `At the moment, there is no information about this slot! It's available!`
+                    contentElement.innerHTML = `At the moment, there is no information about this slot! It's not busy!`
                     return
                 }
                 break
@@ -48,7 +62,7 @@ async function selectTab(tabType) {
                     return
                 }
                 if(JSON.parse(selectedSlot).busy) {
-                    contentElement.innerHTML = `At the moment, the slot is occupied! To view detailed information, go to the INFO tab.`
+                    contentElement.innerHTML = `At the moment, the slot is busy! To view detailed information, go to the INFO tab.`
                     return
                 }
 
@@ -88,6 +102,26 @@ async function selectTab(tabType) {
                 `)
                 break
             case "history":
+                const selectedParking = sessionStorage.getItem("selectedParking")
+                if(!selectedParking) {
+                    contentElement.innerHTML = `You have not selected a parking!`
+                    return
+                }
+                contentElement.insertAdjacentHTML("afterbegin", `
+                    <div class="data-container none-border" style="width: 100%">
+                        <div class="list-container">
+                            <div class="card-style container-header history">
+                                <span>Car name</span>
+                                <span>Car number</span>
+                                <span>Floor</span>
+                                <span>Slot</span>
+                                <span>Price</span>
+                                <span>Stands Until</span>
+                            </div>
+                            <div class="container-content history"></div>
+                        </div>
+                    </div>
+                `)
                 break
             case "settings":
                 const isSuperAdmin = await checkAdmin()

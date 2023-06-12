@@ -10,12 +10,14 @@ namespace ParkingApplication.BL.Services.Classes;
 public class ParkingService : IParkingService
 {
     private readonly IParkingRepository _repository;
+    private readonly ICarRepository _carRepository;
     private readonly IMapper _mapper;
 
-    public ParkingService(IMapper mapper, IParkingRepository repository)
+    public ParkingService(IMapper mapper, IParkingRepository repository, ICarRepository carRepository)
     {
         _mapper = mapper;
         _repository = repository;
+        _carRepository = carRepository;
     }
 
     public async Task<Parking> AddCarToParking(ParkingModel parking)
@@ -47,5 +49,22 @@ public class ParkingService : IParkingService
         return _repository.GetAll().Where(x => x.FloorNumber == floor 
                                                && x.ParkingTemplateId == parkingId
                                                && x.StandsUntil > currentDateTime).ToList();
+    }
+
+    public async Task<List<ReservationDataModel>> GetHistoryForFloor(int parkingId, int floor)
+    {
+        var parkingHistory = _repository.GetAll().Where(x => x.ParkingTemplateId == parkingId && x.FloorNumber == floor).ToList();
+        List<ReservationDataModel> history = new List<ReservationDataModel>();
+        foreach (var parking in parkingHistory)
+        {
+            var data = new ReservationDataModel
+            {
+                ParkingData = _mapper.Map<ParkingModel>(parking),
+                CarData = _mapper.Map<CarModel>(await _carRepository.GetByIdAsync(parking.CarId))
+            };
+            history.Add(data);
+        }
+
+        return history;
     }
 }

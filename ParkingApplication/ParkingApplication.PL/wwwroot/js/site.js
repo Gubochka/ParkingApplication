@@ -76,7 +76,7 @@ function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
                     const tabType = sessionStorage.getItem("selectedTab")
                     if(tabType && tabType === "reservation" && slotIsBusy) {
                         const contentElement = document.querySelector(".menu-opt-content")
-                        contentElement.innerHTML = `At the moment, the slot is occupied! To view detailed information, go to the INFO tab.`
+                        contentElement.innerHTML = `At the moment, the slot is busy! To view detailed information, go to the INFO tab.`
                     } else if(tabType) {
                         await selectTab(tabType)
                     }
@@ -183,7 +183,8 @@ async function getAllParking($callback=null) {
         parkingList.forEach(parking => {
             parkingListContainer.insertAdjacentHTML("beforeend", `
                 <div class="card-style content-row">
-                    <div class="disable-selection upload-parking card" data-id="${parking.id}" onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount}, ${parking.id})">&#10531;</div>
+                    <div class="disable-selection upload-parking card" data-id="${parking.id}"
+                     onclick="generateParkingFloors(${parking.floorsCount}, ${parking.slotsCount}, ${parking.id})">&#10531;</div>
                     <span>${parking.name}</span>
                     <span>${parking.floorsCount}</span>
                     <span>${parking.slotsCount}</span>
@@ -298,7 +299,8 @@ async function getAllAdmins() {
                     <span contenteditable="true">${admin.email}</span>
                     <span contenteditable="true">${admin.password}</span>
                     <span>
-                        <select onchange="addParkingToAdmin(${admin.id}, '${admin.email}', '${admin.password}', +this.value)" data-parking-id="${admin.parkingTemplateId}" class="admin-parking-select content-input"></select>
+                        <select onchange="addParkingToAdmin(${admin.id}, '${admin.email}', '${admin.password}', +this.value)"
+                         data-parking-id="${admin.parkingTemplateId}" class="admin-parking-select content-input"></select>
                     </span>
                     <span class="disable-selection delete-x" onclick="deleteAdmin(${admin.id})">&times;</span>
                 </div>
@@ -466,8 +468,68 @@ async function getCurrentParkingForAdmin() {
     })
     if (response.ok === true) {
         const responseData = (await response.json()).value
-        responseData.parkingId = responseData.id
-        delete responseData.id
-        if(responseData) sessionStorage.setItem("selectedParking", JSON.stringify(responseData))
+        if(responseData) {
+            responseData.parkingId = responseData.id
+            delete responseData.id
+            sessionStorage.setItem("selectedParking", JSON.stringify(responseData))
+        } else {
+            sessionStorage.removeItem("selectedParking")
+        }
+    }
+}
+
+async function getSlotData(floor, slot, parkingId) {
+    const token = checkToken()
+    const response = await fetch("/getSlotData", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            parkingId: +parkingId,
+            floor: +floor,
+            slot: +slot
+        })
+    })
+    if (response.ok === true) {
+        const responseData = (await response.json()).value
+        console.log(responseData)
+    }
+}
+
+async function getHistoryForFloor(floor, parkingId) {
+    const token = checkToken()
+    const response = await fetch("/getHistoryForFloor", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            parkingId: +parkingId,
+            floor: +floor
+        })
+    })
+    if (response.ok === true) {
+        const responseData = (await response.json()).value
+        if(responseData) {
+            responseData.reverse()
+            const contentContainer = document.querySelector("div.container-content.history")
+            responseData.forEach(data => {
+                contentContainer.insertAdjacentHTML("beforeend", `
+                    <div class="card-style content-row">
+                        <span>${data.carData.carName}</span>
+                        <span>${data.carData.carNumber}</span>
+                        <span>${data.parkingData.floorNumber}</span>
+                        <span>${data.parkingData.slotNumber}</span>
+                        <span>${data.parkingData.price}$</span>
+                        <span>${data.parkingData.standsUntil}</span>
+                    </div>
+                `)
+            })
+        }
     }
 }

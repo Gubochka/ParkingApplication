@@ -53,14 +53,14 @@ public class ParkingController : Controller
     }
     
     [HttpPost("getParkingSlotsData"), Authorize]
-    public async Task<IActionResult> GetParkingSlotsData([FromBody]RequestSlotsDto request)
+    public IActionResult GetParkingSlotsData([FromBody]RequestSlotsDto request)
     {
         var result = _parkingService.GetParkingSlotsData(request.ParkingId, request.Floor);
         return Ok(Results.Json(result));
     }
     
     [HttpPost("getPriceByDateTime"), Authorize]
-    public async Task<IActionResult> GetPriceByDateTime([FromBody]DateTimePriceDto request)
+    public IActionResult GetPriceByDateTime([FromBody]DateTimePriceDto request)
     {
         var result = _parkingTemplateService.GetPriceByDateTime(request.StandsUntil, request.ParkingId);
         return Ok(Results.Json(new
@@ -81,8 +81,15 @@ public class ParkingController : Controller
         
         var mappedParking = _mapper.Map<ParkingModel>(data.ParkingData);
         mappedParking.CarId = carResult.Id;
-        var parkingResult = await _parkingService.AddCarToParking(mappedParking);
+        await _parkingService.AddCarToParking(mappedParking);
 
         return Ok();
+    }
+    
+    [HttpPost("getHistoryForFloor"), Authorize]
+    public async Task<IActionResult> GetHistoryForFloor([FromBody]RequestSlotsDto request)
+    {
+        var result = _mapper.Map<List<ReservationDataDto>>(await _parkingService.GetHistoryForFloor(request.ParkingId, request.Floor));
+        return Ok(Results.Json(result));
     }
 }
