@@ -1,19 +1,22 @@
 ﻿window.addEventListener("click", async event => {
-    const btnType = event.target.dataset.btn
+    const tabType = event.target.dataset.btn
+    await selectTab(tabType)
+})
+
+async function selectTab(tabType) {
     const contentElement = document.querySelector(".menu-opt-content")
     const targetsList = ["info", "reservation", "history", "settings"]
-    if(targetsList.includes(btnType)) {
+    if(targetsList.includes(tabType)) {
         contentElement.innerHTML = null
         let callback = () => null
-        switch (btnType) {
+        sessionStorage.setItem("selectedTab", tabType)
+        switch (tabType) {
             case "info":
-                
                 break
             case "reservation":
                 callback = getAllOwnersNames
                 break
             case "history":
-                
                 break
             case "settings":
                 callback = async () => {
@@ -27,10 +30,28 @@
         }, contentElement, {childList: true}, 5000)
     }
     if (contentElement) {
-        switch (btnType) {
+        const selectedSlot = sessionStorage.getItem("selectedSlot")
+        switch (tabType) {
             case "info":
+                if(!selectedSlot) {
+                    contentElement.innerHTML = `You have not selected any slot!`
+                    return
+                }
+                if(!JSON.parse(selectedSlot).busy) {
+                    contentElement.innerHTML = `At the moment, there is no information about this slot! It's available!`
+                    return
+                }
                 break
             case "reservation":
+                if(!selectedSlot) {
+                    contentElement.innerHTML = `You have not selected any slot!`
+                    return
+                }
+                if(JSON.parse(selectedSlot).busy) {
+                    contentElement.innerHTML = `At the moment, the slot is occupied! To view detailed information, go to the INFO tab.`
+                    return
+                }
+
                 contentElement.insertAdjacentHTML("afterbegin", `
                     <div class="data-container none-border" style="width: 50%">
                         <div class="field-container">
@@ -60,12 +81,11 @@
                               onchange="getPriceByDateTime(this.value, JSON.parse(sessionStorage.getItem('selectedParking')).parkingId)">
                         </div>
                         <label>Price: <span id="field-reserv-price" style="font-style: italic">0</span> $</label>
-                        <div class="header-btn card-style" style="width: 100%; height: 30px" onclick="">
+                        <div class="header-btn card-style" style="width: 100%; height: 30px" onclick="reservationCarToParking()">
                             <span>Reservation car</span>
                         </div>
                     </div>
                 `)
-                
                 break
             case "history":
                 break
@@ -132,4 +152,4 @@
                 break
         }
     }
-})
+}

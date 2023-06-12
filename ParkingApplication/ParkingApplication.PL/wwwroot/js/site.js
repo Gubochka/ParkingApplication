@@ -2,16 +2,34 @@
     if (document.readyState === "complete") {
         const token = sessionStorage.getItem("accessToken")
         if(!token) adminLogout()
-        if(await checkAdmin() && !document.querySelector('.menu-btn[data-btn="settings"]')) {
+        const isSuperAdmin = await checkAdmin()
+        if(isSuperAdmin && !document.querySelector('.menu-btn[data-btn="settings"]')) {
             const btnsContainer = document.querySelector(".menu-opt-btns")
             btnsContainer.insertAdjacentHTML("beforeend", `
-        <div class="disable-selection card-style menu-btn" data-btn="settings">
-            <span data-btn="settings">Settings</span>
-        </div>
-        `)
+                <div class="disable-selection card-style menu-btn" data-btn="settings">
+                    <span data-btn="settings">Settings</span>
+                </div>
+            `)
+        } else if(!isSuperAdmin) {
+            // getting parking data for admin
+            // and set selectedParking to sessionStorage
+        }
+        const selectedParking = sessionStorage.getItem("selectedParking")
+        if(selectedParking) {
+            const parkingData = JSON.parse(selectedParking)
+            await generateParkingFloors(parkingData.floorsCount, parkingData.slotsCount, parkingData.parkingId)
         }
     }
 })
+
+const checkToken = () => {
+    const token = sessionStorage.getItem("accessToken")
+    if(!token) { 
+        adminLogout();
+        return
+    }
+    return token
+}
 
 function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
     const remainder = slotsCount % 4
@@ -41,8 +59,28 @@ function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
                 slotContainer.dataset.parkingId = parkingId
 
                 const slotData = slotsData.find(data=> data.slotNumber === currentSlot);
+                let  slotIsBusy = false
                 if(slotData) {
                     slotContainer.classList.add("busy")
+                    slotIsBusy = true
+                }
+                
+                slotContainer.onclick = async function () {
+                    sessionStorage.setItem("selectedSlot", JSON.stringify({
+                        floor: +this.dataset.floor,
+                        slot: +this.dataset.slot,
+                        busy: slotIsBusy
+                    }))
+                    const selectedBefore = document.querySelector("abbr.parking-floor-slot.selected")
+                    if(selectedBefore) selectedBefore.classList.remove("selected")
+                    this.classList.add("selected")
+                    const tabType = sessionStorage.getItem("selectedTab")
+                    if(tabType && tabType === "reservation" && slotIsBusy) {
+                        const contentElement = document.querySelector(".menu-opt-content")
+                        contentElement.innerHTML = `At the moment, the slot is occupied! To view detailed information, go to the INFO tab.`
+                    } else if(tabType) {
+                        await selectTab(tabType)
+                    }
                 }
                 
                 underRowContainer.insertAdjacentElement("beforeend", slotContainer)
@@ -56,11 +94,7 @@ function generateParkingSlots(floor, slotsCount, parkingId, slotsData) {
 
 async function getSlotsByParkingFloor(floor, slotsCount, parkingId) {
 
-    let token = sessionStorage.getItem("accessToken")
-    if(!token) {
-        adminLogout()
-        return
-    }
+    const token = checkToken()
     const response = await fetch("/getParkingSlotsData", {
         method: "POST",
         headers: {
@@ -75,7 +109,6 @@ async function getSlotsByParkingFloor(floor, slotsCount, parkingId) {
     })
     if (response.ok === true) {
         const slotsData = (await response.json()).value
-        console.log(slotsData)
         generateParkingSlots(floor, slotsCount, parkingId, slotsData)
     }
 }
@@ -90,12 +123,21 @@ async function selectFloor(selectedElement, floorsContainer, floorsCount, floors
     const selectedIndex = +selectedElement.dataset.index
     selectedElement.classList.add("selected")
     const slicedElements = [...floorsContainer.children].slice(0, selectedIndex+1)
-
+    
+    sessionStorage.setItem("selectedParking", JSON.stringify({
+        parkingId: parkingId,
+        floorsCount: floorsCount,
+        slotsCount: slotsCount
+    }))
+    
     slicedElements.forEach(element => {
         let marginBottom = parseInt(element.style.marginBottom)
         marginBottom -= 60
         element.style.marginBottom = `${marginBottom}px`
     })
+    sessionStorage.removeItem("selectedSlot")
+    const tabType = sessionStorage.getItem("selectedTab")
+    if(tabType && tabType !== "settings") await selectTab(tabType)
     await getSlotsByParkingFloor(+selectedElement.dataset.index+1, slotsCount, parkingId)
 }
 
@@ -124,11 +166,7 @@ async function generateParkingFloors(floorsCount, slotsCount, parkingId) {
 async function getAllParking($callback=null) {
     if(!(await checkAdmin())) return
 
-    let token = sessionStorage.getItem("accessToken")
-    if(!token) {
-        adminLogout()
-        return
-    }
+    const token = checkToken()
     const response = await fetch("/getAllParking", {
         method: "GET",
         headers: {
@@ -160,10 +198,9 @@ async function getAllParking($callback=null) {
 }
 
 async function addNewParking() {
-    if(!(await checkAdmin())) return 
-    
-    const token = sessionStorage.getItem("accessToken")
-    if(!token) { adminLogout(); return }
+    if(!(await checkAdmin())) return
+
+    const token = checkToken()
     
     const parkingName = document.querySelector("#field-parking-name")
     const parkingPrice = document.querySelector("#field-price")
@@ -186,15 +223,14 @@ async function addNewParking() {
     if (response.ok === true) {
         parkingName.value = null
         parkingPrice.value = null
-        await getAllParking()
+        await getAllAdmins()
     }
 }
 
 async function deleteParking(parkingId) {
     if(!(await checkAdmin())) return
 
-    const token = sessionStorage.getItem("accessToken")
-    if(!token) { adminLogout(); return }
+    const token = checkToken()
 
     const response = await fetch("/deleteParking", {
         method: "DELETE",
@@ -206,15 +242,14 @@ async function deleteParking(parkingId) {
         body: +parkingId
     })
     if (response.ok === true) {
-        await getAllParking()
+        await getAllAdmins()
     }
 }
 
 async function addNewAdmin() {
     if(!(await checkAdmin())) return
 
-    const token = sessionStorage.getItem("accessToken")
-    if(!token) { adminLogout(); return }
+    const token = checkToken()
 
     const adminEmail = document.querySelector("#field-admin-email")
     const adminPass = document.querySelector("#field-admin-pass")
@@ -243,13 +278,9 @@ async function addNewAdmin() {
 async function getAllAdmins() {
     if(!(await checkAdmin())) return
 
-    let token = sessionStorage.getItem("accessToken")
-    if(!token) {
-        adminLogout()
-        return
-    }
+    const token = checkToken()
     const response = await fetch("/getAllAdmins", {
-        method: "GET",
+        method: "POST",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -293,12 +324,7 @@ async function getAllAdmins() {
 async function deleteAdmin(adminId) {
     if (!(await checkAdmin())) return
 
-    const token = sessionStorage.getItem("accessToken")
-    if (!token) {
-        adminLogout();
-        return
-    }
-
+    const token = checkToken()
     const response = await fetch("/deleteAdmin", {
         method: "DELETE",
         headers: {
@@ -315,12 +341,8 @@ async function deleteAdmin(adminId) {
 
 async function addParkingToAdmin(adminId, adminEmail, adminPass, parkingId) {
     if(!(await checkAdmin())) return
-    
-    let token = sessionStorage.getItem("accessToken")
-    if(!token) {
-        adminLogout()
-        return
-    }
+
+    const token = checkToken()
     const response = await fetch("/addParkingToAdmin", {
         method: "PUT",
         headers: {
@@ -341,3 +363,94 @@ async function addParkingToAdmin(adminId, adminEmail, adminPass, parkingId) {
     }
 }
 
+async function getPriceByDateTime(datetime, parkingId) {
+    const token = checkToken()
+    const response = await fetch("/getPriceByDateTime", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            ParkingId: +parkingId,
+            StandsUntil: datetime
+        })
+    })
+    if (response.ok === true) {
+        document.querySelector("#field-reserv-price").innerHTML = (await response.json()).value.price.result
+    }
+}
+
+async function getAllOwnersNames() {
+    const token = checkToken()
+    const response = await fetch("/getAllOwnersNames", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    })
+    if (response.ok === true) {
+        const dataList = document.querySelector("#owners-names")
+        if(!dataList) return
+        dataList.innerHTML = null
+        const responseData = (await response.json()).value
+
+        responseData.forEach(data => dataList.insertAdjacentHTML("beforeend", `<option value="${data.fullName}">`))
+    }
+}
+
+async function reservationCarToParking() {
+    const token = checkToken()
+    const selectedParking = sessionStorage.getItem("selectedParking")
+    const selectedSlot = sessionStorage.getItem("selectedSlot")
+    if(!selectedParking || !selectedSlot) return
+    
+    const parkingData = JSON.parse(selectedParking)
+    const slotData = JSON.parse(selectedSlot)
+    const ownerFullName = document.querySelector("#field-owner-fullname")
+    const phoneNumber = document.querySelector("#field-owner-pnumber")
+    const carName = document.querySelector("#field-car-name")
+    const carNumber = document.querySelector("#field-car-number")
+    const standsUntil = document.querySelector("#field-stands-until")
+    const price = document.querySelector("#field-reserv-price")
+    if(!ownerFullName.value.trim() || !phoneNumber.value.trim()
+        || !carName.value.trim() || !carNumber.value.trim()
+        || !standsUntil.value) return
+    
+    const response = await fetch("/reservationCarToParking", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            ownerData: {
+                fullName: ownerFullName.value.trim(),
+                phoneNumber: phoneNumber.value.trim(),
+            },
+            carData: {
+                carName: carName.value.trim(),
+                carNumber: carNumber.value.trim(),
+            },
+            parkingData: {
+                parkingTemplateId: parkingData.parkingId,
+                floorNumber: slotData.floor,
+                slotNumber: slotData.slot,
+                standsUntil: standsUntil.value,
+                price: +price.innerHTML
+            },
+        })
+    })
+    if (response.ok === true) {
+        ownerFullName.value = null
+        phoneNumber.value = null
+        carName.value = null
+        carNumber.value = null
+        await getAllOwnersNames()
+        await getSlotsByParkingFloor(slotData.floor, parkingData.slotsCount, parkingData.parkingId)
+    }
+}

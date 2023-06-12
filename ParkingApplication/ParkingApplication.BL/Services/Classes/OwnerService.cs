@@ -17,10 +17,12 @@ public class OwnerService : IOwnerService
         _repository = repository;
     }
 
-    public async Task<Owner> AddOwner(OwnerModel owner)
+    public async Task<OwnerModel> AddOwner(OwnerModel owner)
     {
         var entity = _mapper.Map<Owner>(owner);
-        return await _repository.AddAsync(entity);
+        var result = _repository.GetAll().FirstOrDefault(x => x.FullName == entity.FullName && x.PhoneNumber == entity.PhoneNumber) ??
+                     await _repository.AddAsync(entity);
+        return _mapper.Map<OwnerModel>(result);
     }
 
     public async Task<OwnerModel>? GetOwnerById(int id)
@@ -32,5 +34,11 @@ public class OwnerService : IOwnerService
     public async Task DeleteOwner(int id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public List<OwnerModel> GetAllOwners()
+    {
+        var entities = _repository.GetAll().ToList();
+        return _mapper.Map<List<OwnerModel>>(entities);
     }
 }

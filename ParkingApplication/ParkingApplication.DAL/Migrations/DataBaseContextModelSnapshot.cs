@@ -65,7 +65,10 @@ namespace ParkingApplication.DAL.Migrations
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CarName")
                         .IsRequired()
@@ -80,8 +83,7 @@ namespace ParkingApplication.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
+                    b.HasIndex("Id");
 
                     b.HasIndex("OwnerId");
 
@@ -138,6 +140,8 @@ namespace ParkingApplication.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
                     b.HasIndex("Id");
 
                     b.HasIndex("ParkingTemplateId");
@@ -184,40 +188,39 @@ namespace ParkingApplication.DAL.Migrations
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Car", b =>
                 {
-                    b.HasOne("ParkingApplication.DAL.Entities.Parking", "Parking")
-                        .WithOne("Car")
-                        .HasForeignKey("ParkingApplication.DAL.Entities.Car", "Id")
-                        .HasPrincipalKey("ParkingApplication.DAL.Entities.Parking", "CarId")
-                        .IsRequired();
-
                     b.HasOne("ParkingApplication.DAL.Entities.Owner", "Owner")
                         .WithMany("Cars")
                         .HasForeignKey("OwnerId")
                         .IsRequired();
 
                     b.Navigation("Owner");
-
-                    b.Navigation("Parking");
                 });
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Parking", b =>
                 {
+                    b.HasOne("ParkingApplication.DAL.Entities.Car", "Car")
+                        .WithMany("Parking")
+                        .HasForeignKey("CarId")
+                        .IsRequired();
+
                     b.HasOne("ParkingApplication.DAL.Entities.ParkingTemplate", "ParkingTemplate")
                         .WithMany("Parkings")
                         .HasForeignKey("ParkingTemplateId")
                         .IsRequired();
 
+                    b.Navigation("Car");
+
                     b.Navigation("ParkingTemplate");
+                });
+
+            modelBuilder.Entity("ParkingApplication.DAL.Entities.Car", b =>
+                {
+                    b.Navigation("Parking");
                 });
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Owner", b =>
                 {
                     b.Navigation("Cars");
-                });
-
-            modelBuilder.Entity("ParkingApplication.DAL.Entities.Parking", b =>
-                {
-                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.ParkingTemplate", b =>

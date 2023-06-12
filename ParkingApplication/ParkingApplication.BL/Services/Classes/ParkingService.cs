@@ -43,6 +43,9 @@ public class ParkingService : IParkingService
 
     public List<Parking> GetParkingSlotsData(int parkingId, int floor)
     {
-        return _repository.GetAll().Where(x => x.FloorNumber == floor && x.ParkingTemplateId == parkingId).ToList();
+        DateTime currentDateTime = DateTime.Now;
+        return _repository.GetAll().Where(x => x.FloorNumber == floor 
+                                               && x.ParkingTemplateId == parkingId
+                                               && x.StandsUntil > currentDateTime).ToList();
     }
 }

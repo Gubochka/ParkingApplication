@@ -29,7 +29,7 @@ public class AdminController : Controller
         return Ok();
     }
 
-    [HttpGet("getAllAdmins"), Authorize] 
+    [HttpPost("getAllAdmins"), Authorize] 
     public IActionResult AddNewAdmin()
     {
         return Ok(Results.Json(_adminService.GetAllAdmins()));

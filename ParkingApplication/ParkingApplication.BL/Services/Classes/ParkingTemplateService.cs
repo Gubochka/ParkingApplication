@@ -42,4 +42,12 @@ public class ParkingTemplateService : IParkingTemplateService
         var parking = _repository.GetAll();
         return parking.ToList();
     }
+
+    public async Task<float> GetPriceByDateTime(DateTime dateTime, int parkingId)
+    {
+        var parking = await _repository.GetByIdAsync(parkingId);
+        float totalPrice = (float)(dateTime - DateTime.Now).TotalHours * parking.Price;
+        totalPrice = (float)Math.Round(totalPrice, 2);
+        return totalPrice < 0 ? 0 : totalPrice;
+    }
 }

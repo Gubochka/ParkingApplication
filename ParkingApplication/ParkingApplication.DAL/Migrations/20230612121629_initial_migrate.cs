@@ -31,12 +31,34 @@ namespace ParkingApplication.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     FloorsCount = table.Column<int>(type: "int", nullable: false),
-                    SlotsCount = table.Column<int>(type: "int", nullable: false)
+                    SlotsCount = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ParkingTemplates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    CarName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    CarNumber = table.Column<string>(type: "nvarchar(15)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_Owners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owners",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -76,36 +98,16 @@ namespace ParkingApplication.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Parking", x => x.Id);
-                    table.UniqueConstraint("AK_Parking_CarId", x => x.CarId);
+                    table.ForeignKey(
+                        name: "FK_Parking_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Parking_ParkingTemplates_ParkingTemplateId",
                         column: x => x.ParkingTemplateId,
                         principalTable: "ParkingTemplates",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    CarName = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    CarNumber = table.Column<string>(type: "nvarchar(15)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cars_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Cars_Parking_Id",
-                        column: x => x.Id,
-                        principalTable: "Parking",
-                        principalColumn: "CarId");
                 });
 
             migrationBuilder.InsertData(
@@ -126,8 +128,7 @@ namespace ParkingApplication.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_Id",
                 table: "Cars",
-                column: "Id",
-                unique: true);
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_OwnerId",
@@ -138,6 +139,11 @@ namespace ParkingApplication.DAL.Migrations
                 name: "IX_Owners_Id",
                 table: "Owners",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parking_CarId",
+                table: "Parking",
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Parking_Id",
@@ -162,16 +168,16 @@ namespace ParkingApplication.DAL.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
-                name: "Cars");
-
-            migrationBuilder.DropTable(
-                name: "Owners");
-
-            migrationBuilder.DropTable(
                 name: "Parking");
 
             migrationBuilder.DropTable(
+                name: "Cars");
+
+            migrationBuilder.DropTable(
                 name: "ParkingTemplates");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
         }
     }
 }

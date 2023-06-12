@@ -33,6 +33,8 @@ public class AppMappingProfile : Profile
                 opt => opt.MapFrom(admin => admin.IsSuperAdmin));
         
         CreateMap<OwnerModel, Owner>()
+            .ForMember(owner => owner.Id,
+                opt => opt.MapFrom(owner => owner.Id))
             .ForMember(owner => owner.FullName,
                 opt => opt.MapFrom(owner => owner.FullName))
             .ForMember(owner => owner.PhoneNumber,
@@ -40,12 +42,16 @@ public class AppMappingProfile : Profile
         
         
         CreateMap<Owner, OwnerModel>()
+            .ForMember(owner => owner.Id,
+                opt => opt.MapFrom(owner => owner.Id))
             .ForMember(owner => owner.FullName,
                 opt => opt.MapFrom(owner => owner.FullName))
             .ForMember(owner => owner.PhoneNumber,
                 opt => opt.MapFrom(owner => owner.PhoneNumber));
 
         CreateMap<CarModel, Car>()
+            .ForMember(car => car.Id,
+                opt => opt.MapFrom(car => car.Id))
             .ForMember(car => car.OwnerId,
                 opt => opt.MapFrom(car => car.OwnerId))
             .ForMember(car => car.CarName,
@@ -54,6 +60,8 @@ public class AppMappingProfile : Profile
                 opt => opt.MapFrom(car => car.CarNumber));
         
         CreateMap<Car, CarModel>()
+            .ForMember(car => car.Id,
+                opt => opt.MapFrom(car => car.Id))
             .ForMember(car => car.OwnerId,
                 opt => opt.MapFrom(car => car.OwnerId))
             .ForMember(car => car.CarName,

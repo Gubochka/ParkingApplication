@@ -9,16 +9,15 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
     public void Configure(EntityTypeBuilder<Car> builder)
     {
         builder.HasIndex(x => x.Id);
+        builder.Property(x => x.OwnerId);
         builder.Property(x => x.CarName).HasColumnType("nvarchar(100)");
         builder.Property(x => x.CarNumber).HasColumnType("nvarchar(15)");
 
         builder
-            .HasOne(x => x.Parking)
+            .HasMany(x => x.Parking)
             .WithOne(x => x.Car)
-            .HasForeignKey<Car>(x => x.Id)
-            .HasPrincipalKey<Parking>(x => x.CarId)
+            .HasForeignKey(x => x.CarId)
+            .HasPrincipalKey(x => x.Id)
             .OnDelete(DeleteBehavior.ClientSetNull);
-
-
     }
 }

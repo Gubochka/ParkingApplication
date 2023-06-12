@@ -5,7 +5,7 @@ namespace ParkingApplication.BL.Services.Interfaces;
 
 public interface ICarService
 {
-    Task<Car> AddCar(CarModel car);
+    Task<CarModel> AddCar(CarModel car);
     Task<CarModel>? GetCarById(int id);
     Task DeleteCar(int id);
 }

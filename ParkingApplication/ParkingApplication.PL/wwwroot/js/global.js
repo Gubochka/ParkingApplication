@@ -1,7 +1,13 @@
 ﻿const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-const getTodayDate = () => new Date().toISOString().split("T")[0]
+const getTodayDateTime = () => {
+    let parts = new Date().toISOString().replace("Z", "").split(':')
+    return [parts[0], parts[1]].join(':')
+}
 const observe = ($callback, target, config, timeout = 1000) => {
-    const observer = new MutationObserver($callback)
+    const observer = new MutationObserver(((mutationsList, observer) => {
+        observer.disconnect()
+        $callback()
+    }))
     observer.observe(target, config)
     setTimeout(() => {
         observer.disconnect()

@@ -17,10 +17,13 @@ public class CarService : ICarService
         _repository = repository;
     }
 
-    public async Task<Car> AddCar(CarModel car)
+    public async Task<CarModel> AddCar(CarModel car)
     {
         var entity = _mapper.Map<Car>(car);
-        return await _repository.AddAsync(entity);
+        var result = _repository.GetAll()
+            .FirstOrDefault(x => x.CarName == entity.CarName && x.CarNumber == entity.CarNumber) ??
+                     await _repository.AddAsync(entity);
+        return _mapper.Map<CarModel>(result);
     }
 
     public async Task<CarModel>? GetCarById(int id)
