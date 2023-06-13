@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using ParkingApplication.DAL.Entities;
 using ParkingApplication.DAL.EntityConfigurations;
+using ParkingApplication.DAL.Repositories.Interfaces;
 
 namespace ParkingApplication.DAL.Context;
 
@@ -15,10 +16,12 @@ public class DataBaseContext : DbContext
     public virtual DbSet<Parking> Parking { get; set; }
 
     private readonly IConfiguration _configuration;
+    private readonly IPasswordHashRepository _passwordHashRepository;
     
-    public DataBaseContext(DbContextOptions<DataBaseContext> options, IConfiguration configuration) : base(options)
+    public DataBaseContext(DbContextOptions<DataBaseContext> options, IConfiguration configuration, IPasswordHashRepository passwordHashRepository) : base(options)
     {
         _configuration = configuration;
+        _passwordHashRepository = passwordHashRepository;
     }
     
     protected override void OnModelCreating(ModelBuilder builder)
@@ -39,7 +42,7 @@ public class DataBaseContext : DbContext
             .HasData( new Admin {
                     Id = 1,
                     Email = _configuration["Secrets:SuperAdmin:Email"],
-                    Password = _configuration["Secrets:SuperAdmin:Password"],
+                    Password = _passwordHashRepository.HashPassword(_configuration["Secrets:SuperAdmin:Password"]),
                     IsSuperAdmin = true,
                 });
     }

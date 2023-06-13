@@ -11,17 +11,20 @@ public class AdminService : IAdminService
 {
     private readonly IAdminRepository _repository;
     private readonly IParkingTemplateRepository _parkingTemplateRepository;
+    private readonly IPasswordHashRepository _passwordHashRepository;
     private readonly IMapper _mapper;
 
-    public AdminService(IMapper mapper, IAdminRepository repository, IParkingTemplateRepository parkingTemplateRepository)
+    public AdminService(IMapper mapper, IAdminRepository repository, IParkingTemplateRepository parkingTemplateRepository, IPasswordHashRepository passwordHashRepository)
     {
         _mapper = mapper;
         _repository = repository;
         _parkingTemplateRepository = parkingTemplateRepository;
+        _passwordHashRepository = passwordHashRepository;
     }
 
     public async Task<Admin> AddAdmin(AdminModel admin)
     {
+        admin.Password = _passwordHashRepository.HashPassword(admin.Password);
         var entity = _mapper.Map<Admin>(admin);
         return await _repository.AddAsync(entity);
     }

@@ -6,18 +6,21 @@ using ParkingApplication.BL.Extensions;
 using ParkingApplication.BL.Models;
 using ParkingApplication.BL.Services.Interfaces;
 using ParkingApplication.DAL.Entities;
+using ParkingApplication.DAL.Repositories.Interfaces;
 
 namespace ParkingApplication.BL.Services.Classes;
 
 public class AuthService : IAuthService
 {
     private readonly IAdminService _adminService;
+    private readonly IPasswordHashRepository _passwordHashRepository;
     private readonly IMapper _mapper;
 
-    public AuthService(IAdminService adminService, IMapper mapper)
+    public AuthService(IAdminService adminService, IMapper mapper, IPasswordHashRepository passwordHashRepository)
     {
         _adminService = adminService;
         _mapper = mapper;
+        _passwordHashRepository = passwordHashRepository;
     }
     
     public string GenerateToken(AdminModel admin)
@@ -44,6 +47,6 @@ public class AuthService : IAuthService
         if (resultAdmin is null) return "EMAIL";
         
         var result = _mapper.Map<Admin>(resultAdmin);
-        return result.Password == admin.Password ? GenerateToken(admin) : "PASSWORD";
+        return _passwordHashRepository.VerifyPassword(admin.Password, result.Password) ? GenerateToken(admin) : "PASSWORD";
     }
 }

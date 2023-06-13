@@ -264,7 +264,7 @@ span.info-span {
 }
 
 .list-container .container-header.admin, .list-container .container-content.admin .content-row {
-  grid-template-columns: calc(45% - 10px) calc(25% - 10px) calc(30% - 10px) 30px;
+  grid-template-columns: calc(60% - 15px)  calc(40% - 15px) 30px;
 }
 
 .list-container .container-header.history, .list-container .container-content.history .content-row {

@@ -291,7 +291,6 @@ async function getAllAdmins() {
             adminsListContainer.insertAdjacentHTML("beforeend", `
                 <div class="card-style content-row">
                     <span contenteditable="true">${admin.email}</span>
-                    <span contenteditable="true">${admin.password}</span>
                     <span>
                         <select onchange="addParkingToAdmin(${admin.id}, '${admin.email}', '${admin.password}', +this.value)"
                          data-parking-id="${admin.parkingTemplateId}" class="admin-parking-select content-input"></select>

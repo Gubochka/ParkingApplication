@@ -20,5 +20,6 @@ public static class Injecting
         services.AddScoped<IParkingTemplateRepository, ParkingTemplateRepository>();
         services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<IParkingRepository, ParkingRepository>();
+        services.AddScoped<IPasswordHashRepository, PasswordHashRepository>();
     }
 }
