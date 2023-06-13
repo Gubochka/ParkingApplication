@@ -391,8 +391,9 @@ async function getAllOwnersNames() {
         if(!dataList) return
         dataList.innerHTML = null
         const responseData = (await response.json()).value
-
-        responseData.forEach(data => dataList.insertAdjacentHTML("beforeend", `<option value="${data.fullName}">`))
+        const uniqueData = responseData.filter((item, index, self) => self.findIndex(obj => obj.fullName === item.fullName) === index);
+        
+        uniqueData.forEach(data => dataList.insertAdjacentHTML("beforeend", `<option value="${data.fullName}">`))
     }
 }
 
@@ -446,6 +447,8 @@ async function reservationCarToParking() {
         carNumber.value = null
         await getAllOwnersNames()
         await getSlotsByParkingFloor(slotData.floor, parkingData.slotsCount, parkingData.parkingId)
+        sessionStorage.removeItem("selectedSlot")
+        await selectTab(sessionStorage.getItem("selectedTab"))
     }
 }
 
