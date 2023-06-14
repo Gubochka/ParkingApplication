@@ -31,7 +31,7 @@ async function selectTab(tabType) {
                     const selectedFloor = document.querySelector("div.parking-floor.selected")
                     if(!selectedFloor || !selectedParking) return
                     parkingData = JSON.parse(selectedParking)
-                    await getHistoryForFloor(selectedFloor.dataset.index+1, parkingData.parkingId)
+                    await getHistoryForFloor(+selectedFloor.dataset.index+1, parkingData.parkingId)
                 }
                 break
             case "settings":
