@@ -7,44 +7,43 @@ namespace ParkingApplication.DAL.Repositories.Classes;
 
 public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    protected readonly DataBaseContext _context;
-    protected readonly DbSet<TEntity> _dbSet;
+    protected readonly DataBaseContext Context;
+    protected readonly DbSet<TEntity> DbSet;
 
     public BaseRepository(DataBaseContext context)
     {
-        _context = context;
-        _dbSet = context.Set<TEntity>();
+        Context = context;
+        DbSet = context.Set<TEntity>();
     }
 
     public async Task<TEntity> AddAsync(TEntity entity)
     {
-        var result = await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        var result = await DbSet.AddAsync(entity);
+        await Context.SaveChangesAsync();
         return result.Entity;
     }
 
     public async Task DeleteAsync(int id)
     {
-        var item = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-        _context.Remove(item);
-        await _context.SaveChangesAsync();
+        var item = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+        Context.Remove(item!);
+        await Context.SaveChangesAsync();
     }
 
     public async Task<TEntity> GetByIdAsync(int id)
     {
-        var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-        return result;
+        return await DbSet.FirstOrDefaultAsync(x => x.Id == id) ?? default!;
     }
          
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        var result = _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
+        var result = DbSet.Update(entity);
+        await Context.SaveChangesAsync();
         return result.Entity;
     }
 
     public IQueryable<TEntity> GetAll()
     {
-        return _dbSet;
+        return DbSet;
     }
 }

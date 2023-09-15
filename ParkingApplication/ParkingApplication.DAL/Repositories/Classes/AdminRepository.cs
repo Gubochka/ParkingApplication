@@ -13,6 +13,6 @@ public class AdminRepository : BaseRepository<Admin>, IAdminRepository
 
     public async Task<Admin> GetAdminByEmail(string email)
     {
-        return await _dbSet.FirstOrDefaultAsync(x => x.Email == email);
+        return await DbSet.FirstOrDefaultAsync(x => x.Email == email) ?? default!;
     }
 }

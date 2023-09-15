@@ -8,12 +8,12 @@ namespace ParkingApplication.DAL.Context;
 
 public class DataBaseContext : DbContext
 {
-    
-    public virtual DbSet<Admin> Admins { get; set; }
-    public virtual DbSet<Owner> Owners { get; set; }
-    public virtual DbSet<Car> Cars { get; set; }
-    public virtual DbSet<ParkingTemplate> ParkingTemplates { get; set; }
-    public virtual DbSet<Parking> Parking { get; set; }
+
+    public virtual DbSet<Admin> Admins { get; set; } = default!;
+    public virtual DbSet<Owner> Owners { get; set; } = default!;
+    public virtual DbSet<Car> Cars { get; set; } = default!;
+    public virtual DbSet<ParkingTemplate> ParkingTemplates { get; set; } = default!;
+    public virtual DbSet<Parking> Parking { get; set; } = default!;
 
     private readonly IConfiguration _configuration;
     private readonly IPasswordHashRepository _passwordHashRepository;
@@ -24,16 +24,16 @@ public class DataBaseContext : DbContext
         _passwordHashRepository = passwordHashRepository;
     }
     
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        builder.ApplyConfiguration(new AdminConfiguration());
-        builder.ApplyConfiguration(new OwnerConfiguration());
-        builder.ApplyConfiguration(new CarConfiguration());
-        builder.ApplyConfiguration(new ParkingTemplateConfiguration());
-        builder.ApplyConfiguration(new ParkingConfiguration());
+        modelBuilder.ApplyConfiguration(new AdminConfiguration());
+        modelBuilder.ApplyConfiguration(new OwnerConfiguration());
+        modelBuilder.ApplyConfiguration(new CarConfiguration());
+        modelBuilder.ApplyConfiguration(new ParkingTemplateConfiguration());
+        modelBuilder.ApplyConfiguration(new ParkingConfiguration());
 
-        base.OnModelCreating(builder);
-        RegSuperAdmin(builder);
+        base.OnModelCreating(modelBuilder);
+        RegSuperAdmin(modelBuilder);
     }
 
     private void RegSuperAdmin(ModelBuilder builder)
@@ -41,8 +41,8 @@ public class DataBaseContext : DbContext
         builder.Entity<Admin>()
             .HasData( new Admin {
                     Id = 1,
-                    Email = _configuration["Secrets:SuperAdmin:Email"],
-                    Password = _passwordHashRepository.HashPassword(_configuration["Secrets:SuperAdmin:Password"]),
+                    Email = _configuration["Secrets:SuperAdmin:Email"]!,
+                    Password = _passwordHashRepository.HashPassword(_configuration["Secrets:SuperAdmin:Password"]!),
                     IsSuperAdmin = true,
                 });
     }

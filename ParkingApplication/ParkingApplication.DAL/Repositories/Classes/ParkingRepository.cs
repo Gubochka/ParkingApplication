@@ -18,14 +18,14 @@ public class ParkingRepository : BaseRepository<Parking>, IParkingRepository
 
     public async Task<int> FindCarOnParking(int floor, int slot)
     {
-        var result = await _dbSet.FirstOrDefaultAsync(x => x.FloorNumber == floor && x.SlotNumber == slot);
+        var result = await DbSet.FirstOrDefaultAsync(x => x.FloorNumber == floor && x.SlotNumber == slot);
         return result.Id;
     }
 
     public async Task DeleteCarFromParking(int carId, int floor, int slot)
     {
-        var item = await _dbSet.FirstOrDefaultAsync(x => x.CarId == carId && x.FloorNumber == floor && x.SlotNumber == slot);
-        _context.Remove(item);
-        await _context.SaveChangesAsync();
+        var item = await DbSet.FirstOrDefaultAsync(x => x.CarId == carId && x.FloorNumber == floor && x.SlotNumber == slot);
+        Context.Remove(item);
+        await Context.SaveChangesAsync();
     }
 }

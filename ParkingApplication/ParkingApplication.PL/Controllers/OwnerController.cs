@@ -6,15 +6,14 @@ using ParkingApplication.DTOs;
 
 namespace ParkingApplication.Controllers;
 
-public class OwnerController : Controller
+[ApiController]
+public class OwnerController : ControllerBase
 {
-    private readonly ILogger<OwnerController> _logger;
     private readonly IOwnerService _ownerService;
     private readonly IMapper _mapper;
 
-    public OwnerController(ILogger<OwnerController> logger, IMapper mapper, IOwnerService ownerService)
+    public OwnerController(IMapper mapper, IOwnerService ownerService)
     {
-        _logger = logger;
         _mapper = mapper;
         _ownerService = ownerService;
     }

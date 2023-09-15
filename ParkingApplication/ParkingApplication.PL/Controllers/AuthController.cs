@@ -7,16 +7,15 @@ using ParkingApplication.DTOs;
 
 namespace ParkingApplication.Controllers;
 
-public class AuthController : Controller
+[ApiController]
+public class AuthController : ControllerBase
 {
-    private readonly ILogger<AuthController> _logger;
     private readonly IAuthService _authService;
     private readonly IAdminService _adminService;
     private readonly IMapper _mapper;
 
-    public AuthController(ILogger<AuthController> logger, IAuthService authService, IMapper mapper, IAdminService adminService)
+    public AuthController(IAuthService authService, IMapper mapper, IAdminService adminService)
     {
-        _logger = logger;
         _authService = authService;
         _mapper = mapper;
         _adminService = adminService;

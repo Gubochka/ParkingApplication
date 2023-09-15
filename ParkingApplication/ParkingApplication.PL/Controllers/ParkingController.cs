@@ -9,18 +9,17 @@ using ParkingApplication.DTOs;
 
 namespace ParkingApplication.Controllers;
 
-public class ParkingController : Controller
+[ApiController]
+public class ParkingController : ControllerBase
 {
-    private readonly ILogger<ParkingController> _logger;
     private readonly IParkingTemplateService _parkingTemplateService;
     private readonly IParkingService _parkingService;
     private readonly IOwnerService _ownerService;
     private readonly ICarService _carService;
     private readonly IMapper _mapper;
 
-    public ParkingController(ILogger<ParkingController> logger, IMapper mapper, IParkingTemplateService parkingTemplateService, IParkingService parkingService, IOwnerService ownerService, ICarService carService)
+    public ParkingController(IMapper mapper, IParkingTemplateService parkingTemplateService, IParkingService parkingService, IOwnerService ownerService, ICarService carService)
     {
-        _logger = logger;
         _mapper = mapper;
         _parkingTemplateService = parkingTemplateService;
         _parkingService = parkingService;

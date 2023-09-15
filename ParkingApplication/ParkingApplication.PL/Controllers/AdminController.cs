@@ -7,15 +7,14 @@ using ParkingApplication.DTOs;
 
 namespace ParkingApplication.Controllers;
 
-public class AdminController : Controller
+[ApiController]
+public class AdminController : ControllerBase
 {
-    private readonly ILogger<AdminController> _logger;
     private readonly IAdminService _adminService;
     private readonly IMapper _mapper;
 
-    public AdminController(ILogger<AdminController> logger, IMapper mapper, IAdminService adminService)
+    public AdminController(IMapper mapper, IAdminService adminService)
     {
-        _logger = logger;
         _mapper = mapper;
         _adminService = adminService;
     }

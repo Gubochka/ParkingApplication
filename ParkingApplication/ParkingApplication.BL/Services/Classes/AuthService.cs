@@ -26,8 +26,8 @@ public class AuthService : IAuthService
     public string GenerateToken(AdminModel admin)
     {
         var token = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
+            issuer: AuthOptions.Issuer,
+            audience: AuthOptions.Audience,
             claims: new List<Claim>
             {
                 new Claim("adminId", admin.Id.ToString()),

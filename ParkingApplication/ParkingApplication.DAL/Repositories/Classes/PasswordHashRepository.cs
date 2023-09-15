@@ -13,8 +13,8 @@ public class PasswordHashRepository : IPasswordHashRepository
     [Obsolete("Method HashPassword() is obsolete. Use MethodX() instead.")]
     public string HashPassword(string password)
     {
-        byte[] salt;
-        new RNGCryptoServiceProvider().GetBytes(salt = new byte[SaltSize]);
+        byte[] salt = new byte[SaltSize];
+        new RNGCryptoServiceProvider().GetBytes(salt);
 
         var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations);
         byte[] hash = pbkdf2.GetBytes(HashSize);
@@ -32,6 +32,7 @@ public class PasswordHashRepository : IPasswordHashRepository
         byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
         byte[] salt = new byte[SaltSize];
         Array.Copy(hashBytes, 0, salt, 0, SaltSize);
+        
         byte[] hash = new byte[HashSize];
         Array.Copy(hashBytes, SaltSize, hash, 0, HashSize);
 
