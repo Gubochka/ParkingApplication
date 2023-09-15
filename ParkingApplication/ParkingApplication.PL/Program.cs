@@ -1,9 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ParkingApplication.BL.Extensions;
-using ParkingApplication.DAL.Context;
 using ParkingApplication.DAL.Extensions;
 using ParkingApplication.Extensions;
 using ParkingApplication.Middleware;
@@ -11,14 +8,10 @@ using ParkingApplication.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.Inject(configuration);
 builder.Services.AddServiceInjection();
 builder.Services.AddMapper();
-
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -36,20 +29,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseSwagger();
-app.UseSwaggerUI(config =>
-{
-    config.RoutePrefix = "docs";
-    config.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkingApplication.PL");
-});
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UseExceptionHandler("/Home/Error");
+//     app.UseHsts();
+// }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
