@@ -12,7 +12,7 @@ public class ParkingConfiguration : IEntityTypeConfiguration<Parking>
         builder.Property(x => x.ParkingTemplateId);
         builder.Property(x => x.FloorNumber);
         builder.Property(x => x.SlotNumber);
-        builder.Property(x => x.StandsUntil).HasColumnType("datetime");
-        builder.Property(x => x.Price).HasColumnType("float");
+        builder.Property(x => x.StandsUntil);
+        builder.Property(x => x.Price);
     }
 }

@@ -9,8 +9,8 @@ public class OwnerConfiguration : IEntityTypeConfiguration<Owner>
     public void Configure(EntityTypeBuilder<Owner> builder)
     {
         builder.HasIndex(x => x.Id);
-        builder.Property(x => x.FullName).HasColumnType("nvarchar(100)");
-        builder.Property(x => x.PhoneNumber).HasColumnType("nvarchar(25)");
+        builder.Property(x => x.FullName);
+        builder.Property(x => x.PhoneNumber);
 
         builder
             .HasMany(x => x.Cars)

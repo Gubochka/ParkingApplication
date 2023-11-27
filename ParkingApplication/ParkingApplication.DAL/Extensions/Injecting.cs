@@ -12,7 +12,7 @@ public static class Injecting
     public static void Inject(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<DataBaseContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("Sql")));
+            options.UseNpgsql(configuration.GetConnectionString("Sql")));
 
         services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IAdminRepository, AdminRepository>();

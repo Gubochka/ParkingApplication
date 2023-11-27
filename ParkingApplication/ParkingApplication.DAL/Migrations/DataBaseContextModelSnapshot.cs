@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ParkingApplication.DAL.Context;
 
 #nullable disable
@@ -17,32 +17,32 @@ namespace ParkingApplication.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0-preview.4.23259.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ParkingApplication.DAL.Entities.Admin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsSuperAdmin")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("ParkingTemplateId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -58,7 +58,7 @@ namespace ParkingApplication.DAL.Migrations
                             Id = 1,
                             Email = "superadmin.parking@gmail.com",
                             IsSuperAdmin = true,
-                            Password = "HShwNb0OSh9BLigJHQi4zPkMI2KGGpVcR0BRcQ6voIgDVXU9"
+                            Password = "0AR815h3QMT0LWCVa2W/ulXWdACkk9OmlFpDQAd277X3cw7L"
                         });
                 });
 
@@ -66,20 +66,20 @@ namespace ParkingApplication.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CarName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CarNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("text");
 
                     b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -94,16 +94,16 @@ namespace ParkingApplication.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -116,27 +116,27 @@ namespace ParkingApplication.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CarId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("FloorNumber")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ParkingTemplateId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("SlotNumber")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("StandsUntil")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -153,22 +153,22 @@ namespace ParkingApplication.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("FloorsCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("text");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
                     b.Property<int>("SlotsCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

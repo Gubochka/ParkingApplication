@@ -8,6 +8,8 @@ using ParkingApplication.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services.AddControllersWithViews();
 builder.Services.Inject(configuration);
 builder.Services.AddServiceInjection();

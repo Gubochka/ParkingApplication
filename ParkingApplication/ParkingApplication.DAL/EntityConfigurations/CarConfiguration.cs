@@ -10,8 +10,8 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
         builder.HasIndex(x => x.Id);
         builder.Property(x => x.OwnerId);
-        builder.Property(x => x.CarName).HasColumnType("nvarchar(100)");
-        builder.Property(x => x.CarNumber).HasColumnType("nvarchar(15)");
+        builder.Property(x => x.CarName);
+        builder.Property(x => x.CarNumber);
 
         builder
             .HasMany(x => x.Parking)
